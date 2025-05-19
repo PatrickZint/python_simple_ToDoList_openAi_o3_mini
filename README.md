@@ -1,0 +1,2 @@
+- .env file need to be added to include keys
+- A new github repository is needed for a new experiment 
