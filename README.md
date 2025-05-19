@@ -1,2 +1,2 @@
-- .env file to be added to include keys
+- Rename .env.example to .env, to include your keys
 - A new github repository is needed for a new experiment 
