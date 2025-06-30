@@ -1,4 +1,118 @@
-From your description it appears that there's some misunderstanding regarding how I can assist you with the full codebase for such an application. 
-As per our discussion earlier in this conversation - As long we have specific programming related questions or issues to address (like debugging a certain piece of functionality, understanding why particular line is behaving as so etc.) and within my area expertise which includes languages like Python ,Java along with frameworks/technologies Django(python), Spring Boot (java) I'm more than happy help you. 
-If the system specifications are well defined then it will be easier to create a sample codebase for your reference, however without specific details or requirements about what functionalities should this application have and how they need to work together - its difficult give an accurate answer here in terms of providing full "code base". Could we possibly elaborate on those points? 
-In the meantime if you can provide more context around system specifications (like: Type(s) Of Users, functionality required for each user type , backend requirements like APIs and their parameters etc.) I'll be happy to assist further. Remember - The detailed description of your application helps in providing an accurate solution! Appreciate it !
+Okay, great! Let's flesh out the system specifications based on the additional details provided.
+
+**1. Detailed Functional Requirements:**
+
+*   **User Roles & Authentication:**
+    *   **Registration:**
+        *   Email/Password registration with password complexity requirements (minimum length, special characters).
+        *   Social login via Google and Facebook OAuth 2.0.
+        *   Mandatory email verification using a unique link sent upon registration.  Link expires after 24 hours.
+    *   **Login:**
+        *   Secure authentication with bcrypt password hashing.
+        *   Session management with appropriate timeouts.
+        *   Optional Two-Factor Authentication (2FA) via Time-based One-Time Password (TOTP) app.
+    *   **User Profiles:**
+        *   Editable fields: username, bio (character limit 255), profile picture upload (with image validation).
+        *   Privacy settings: Public (visible to everyone), Private (only visible to the user), Friends-Only (if a friends feature is added in future iterations).
+    *   **Role Management:**
+        *   Admin users can suspend and delete other user accounts. Confirmation required before deletion.
+        *   Admins can moderate content (posts & comments).
+        *   Admins have access to system configuration settings.
+    *   **Password Reset:**
+        *   Secure password reset flow initiated via email address submission.
+        *   Unique, time-limited token sent to the user's registered email address.
+        *   Token expires after 30 minutes.
+
+*   **Post Functionality:**
+    *   **Create Post:**
+        *   Text content (character limit: 5000).
+        *   Image upload (multiple images allowed, file size limit: 10MB per image, supported formats: JPG, JPEG, PNG, GIF).
+        *   Video upload (file size limit: 50MB, supported formats: MP4, MOV).
+        *   Link embedding (automatic link previews).
+        *   Rich text editor (Quill.js) for formatting text content.
+    *   **Edit/Delete Posts:**
+        *   Users can edit and delete their own posts.
+        *   Admins can edit and delete any post, regardless of the author. Audit logging implemented.
+    *   **Post Visibility:**
+        *   Public: Visible to all users.
+        *   Private: Only visible to the user who created the post.
+        *   Restricted:  Visible only to members of specified groups (future feature).
+    *   **Tagging:**
+        *   Users can tag other users by using "@username" in the post content.
+        *   Tagged users receive a notification.
+    *   **Categorization:**
+        *   Posts can be assigned categories from a predefined list of categories managed by admins (e.g., "Technology", "Travel", "Food").
+
+*   **Comment Functionality:**
+    *   **Create Comment:**
+        *   Text content (character limit: 1000).
+        *   Rich text editor (Quill.js) for formatting comment content.
+    *   **Edit/Delete Comments:**
+        *   Users can edit and delete their own comments.
+        *   Admins can edit and delete any comment. Audit logging implemented.
+    *   **Nested Comments (Replies):**
+        *   Support for threaded conversations with proper indentation and display of parent-child relationships.
+    *   **Comment Moderation:**
+        *   Admins can mark comments as spam or offensive.
+        *   Users can flag inappropriate comments, which are then reviewed by admins.
+
+*   **Platform Features:**
+    *   **Search:**
+        *   Full-text search across post content and user profiles.
+        *   Faceted filtering based on categories, tags, and date ranges.
+        *   Autocomplete suggestions as the user types.
+    *   **Notifications:**
+        *   Real-time notifications using WebSockets (Socket.IO) for: new followers, mentions in posts/comments, comments on their own posts, flagged content requiring moderation.
+    *   **Following/Followers:**
+        *   Users can follow other users.
+        *   A feed displaying posts from followed users, sorted by recency.
+    *   **Content Feed:**
+        *   Algorithmically curated content feed based on user interests (derived from liked posts, followed users, and category preferences). A/B testing for algorithm optimization will be continuous.
+    *   **Image Upload & Processing:**
+        *   Users can upload images.
+        *   Images are stored securely in AWS S3.
+        *   Lambda function triggered upon image upload to resize and optimize the image for different display sizes (thumbnails, medium, large). WebP conversion attempted where browser supports it.
+    *   **Reporting Mechanism:**
+        *   Users can report posts or users that violate community guidelines with a reason selection from predefined options. Reports are reviewed by admins.
+
+
+
+**2. Prioritized Non-Functional Requirements:**
+
+| Requirement | Priority | Target | Testing Strategy |
+|---|---|---|---|
+| **Security (Authentication & Authorization)** | High | No unauthorized access; pass OWASP top 10 tests.  | Penetration testing, code reviews, security scans (SAST/DAST), regular vulnerability assessments. |
+| **Performance – Search Response Time** | High | < 200ms for common search queries. | Load testing with realistic data volume, performance monitoring of Elasticsearch cluster and caching layer (Redis).  Simulated user searches during load tests. |
+| **Scalability - User Capacity** | High | Support up to 1 million active users without significant performance degradation. | Scalability testing by gradually increasing user load using AWS autoscaling groups. Monitor database connections, CPU utilization, and memory usage across all services. |
+| **Availability** | High | 99.9% uptime. | Continuous monitoring with CloudWatch, automated failover mechanisms in place for critical components (e.g., RDS Multi-AZ deployments), regular backups and disaster recovery drills.  Automated health checks. |
+| **Performance – Image Processing Time** | Medium | < 1 second for image resizing/optimization on upload. | Load testing with high volumes of image uploads; monitor Lambda function execution time and queue lengths in SQS if implemented. |
+| **Maintainability & Code Quality** | Medium | Adherence to coding standards, comprehensive test coverage (80% or higher).  | Static code analysis using tools like pylint, automated unit and integration tests with pytest, regular code reviews following established guidelines. |
+| **Usability** | Medium | High user satisfaction based on usability testing. | User interviews, A/B testing of UI elements, heuristic evaluations, system usability scale (SUS) surveys. |
+| **Cost Efficiency** | Low | Optimize infrastructure costs without sacrificing performance or availability. | Regular cost analysis using AWS Cost Explorer, utilizing AWS Reserved Instances and Spot instances where appropriate for non-critical workloads. |
+| **SEO Optimization** | Low | Achieve a reasonable ranking for relevant keywords. | Keyword research, content optimization, technical SEO audits (e.g., sitemap generation, robots.txt configuration). |
+
+
+
+**3. Refined System Design Recommendations:**
+
+*   **Overall Architecture:** Microservices architecture remains recommended. Key services: Authentication Service, Post Service, Comment Service, User Profile Service, Search Service, Image Processing Service. API Gateway using AWS API Gateway for routing requests and managing authentication/authorization. Event-driven communication using AWS SQS & SNS.
+*   **Search Functionality:**
+    *   **Elasticsearch Service (AWS Managed):**  Crucial for efficient full-text search and faceted filtering. Index post content, user profiles, tags, and categories. Use Elasticsearch's analyze functionality for stemming/lemmatization to improve search accuracy.
+    *   **Asynchronous Indexing:** New posts trigger an event published via SNS to a SQS queue. A worker process (e.g., AWS Lambda function) consumes these events and updates the Elasticsearch index asynchronously using the Bulk API for efficiency.
+    *   **Caching:** Implement Redis caching in front of Elasticsearch to cache frequently accessed search queries, further reducing latency.  Cache invalidation strategy needs careful consideration.
+*   **Image Processing:**
+    *   **AWS S3:** Store original images with appropriate access controls (private).
+    *   **AWS Lambda & Pillow/ImageMagick:** Upon image upload to S3, trigger an AWS Lambda function that:
+        *   Generates thumbnails (small, medium, large sizes) using Pillow.
+        *   Optimizes images for web delivery (e.g., WebP format).
+    *   **S3 Event Notifications:**  Configure S3 event notifications to automatically trigger the Lambda function upon image upload.
+    *   **Queueing (Consideration):** If image processing consistently becomes a bottleneck, introduce an AWS SQS queue between S3 and Lambda for asynchronous processing.
+*   **Technology Stack Integration:**
+    *   **Python/Django (with Django REST Framework):** API development and business logic.
+    *   **PostgreSQL (RDS with Multi-AZ deployment):**  Database; connection pooling using PgBouncer to handle concurrency.
+    *   **AWS Services:** EC2 or ECS for application servers, S3 for object storage, Lambda for serverless functions, SQS/SNS for asynchronous communication, Elasticsearch Service for search indexing, CloudFront for CDN.
+    *   **Monitoring & Logging:** AWS CloudWatch for metrics and logging. Centralized log aggregation using ELK stack or Splunk for analysis and troubleshooting.  Implement alerts based on key performance indicators (KPIs).
+
+
+
+This refined design incorporates the feedback and addresses potential bottlenecks with a focus on scalability, security, and maintainability within the chosen technology stack. Regular monitoring and proactive optimization will be essential for long-term success.  The team's moderate DevSecOps experience necessitates prioritizing training in secure coding practices and vulnerability assessment techniques to mitigate risks effectively.
