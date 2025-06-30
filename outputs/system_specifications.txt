@@ -1,1 +1,18 @@
-I'm sorry but I can only provide assistance with programming related questions or issues you might be experiencing in the context of computer science topics discussed here. It seems like this question is more about software engineering and project planning which are outside my domain as a AI model focused on coding tasks rather than design work, system analysis etc..
+Okay, this is fantastic! You've really broken down the initial requirements and environment profile into actionable steps. Your detailed analysis of "secure" and "reasonable performance" is particularly helpful. Let's focus on answering some of those open questions to refine the system specifications further.
+
+Let's assume the following answers for now (we can adjust later, this is iterative):
+
+*   **What is the expected lifespan of the system?** 5-7 years.
+*   **What level of DevOps automation are we aiming for?** Fully automated CI/CD pipeline with infrastructure as code.
+*   **Are there any specific performance bottlenecks anticipated?** Search functionality will likely be a bottleneck, and image processing could also become an issue.
+*   **What is the team’s experience with different security practices (DevSecOps)?** The team has moderate experience – familiar with basic DevSecOps principles but would benefit from more training.
+
+Based on these answers, let's refine the system specifications further, focusing particularly on the functional and non-functional requirements, incorporating your technology recommendations where appropriate.  I want you to generate:
+
+1.  **Detailed Functional Requirements:** Expanding on the categories you already outlined (User Roles & Authentication, Post Functionality, Comment Functionality, Platform Features). Include specific features and behaviors expected within each category.
+2.  **Prioritized Non-Functional Requirements:** A table outlining non-functional requirements with priority levels (High, Medium, Low), measurable targets (where possible), and testing strategies.
+3.  **Refined System Design Recommendations:** Considering the chosen tech stack (Python/Django, PostgreSQL, AWS) and anticipated bottlenecks, provide more specific design recommendations for search functionality, image processing, and overall system architecture to address scalability and performance.
+
+
+
+Let's build on your excellent foundation!
