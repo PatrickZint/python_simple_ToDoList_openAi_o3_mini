@@ -10,8 +10,8 @@ class LLMReasoner:
         #self.api_key = os.getenv("OPENAI_API_KEY")
         self.api_url = "http://localhost:1234/v1/chat/completions"
 
-        if not self.api_key:
-            raise ValueError("OpenAI API key is not configured")
+        #if not self.api_key:
+        #    raise ValueError("OpenAI API key is not configured")
 
     def get_chat_response(self, prompt):
         #print("Using API Key:", self.api_key)
@@ -32,10 +32,10 @@ class LLMReasoner:
             
             result = response.json()
             message = result["choices"][0]["message"]["content"]
-            print("GPT-4 Response received:", message)
+            print("LM Studio Response received:", message)
             return message
         except requests.exceptions.RequestException as error:
-            print("Error calling GPT-4 API:", error)
+            print("Error calling LM Studio API:", error)
             raise
 
 # Example usage
