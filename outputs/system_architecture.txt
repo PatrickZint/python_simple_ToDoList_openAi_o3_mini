@@ -1,21 +1,44 @@
-Based off of your given functional and non-functional requirements I will outline a high level architectural design. Since this is text only model, it's difficult to provide visual representation but here are some key components that would be part of such an architecture for creating blogging platform : 
+Based on your specifications, here's a high-level system architecture including component design and technology stack selection:
+
+1) **User Interface (UI):** We will use ReactJS for the front end because it is fast, scalable, maintainable while offering great flexibility to handle both client side as well server side rendering. Redux can be used with reactjs which helps in managing application state effectively making data flow predictable and easy-to-debug .
+    - User Registration/Login: We will use Formik for handling forms along with Yup library that works perfectly with form validation, to ensure user inputs meet the required criteria (like password strength). 
   
-1) **Presentation Layer (User Interface):** This layer includes the user-facing elements like front end web or mobile application which interacts with users and displays information. It could contain technologies including HTML, CSS & JavaScript along AngularJS/ReactJS etc., in case of a Web Application; Swift for iOS based app OR Kotlin(for Android apps). 
+2) **Server Side:** Node.js can be used as a server which runs JavaScript on both client and serverside making it easier in writing codes once then reusing them for frontend/backend functionality . ExpressJS will handle routing of our app, providing robust features like middleware support to cater NFRs such as scalability & maintainability etc..
+    - Database: MongoDB can be used. It's a NoSQL database which stores data in JSON-like documents making it easy and quick on read / write operations for large datasets unlike SQL databases that require complex joins . 
   
-2) **Business Logic Layer (Application Server):** This layer is responsible to handle the business logic and data processing. It will interact with Presentation Tier, Data Access Tier & possibly other external systems if needed., technologies can include NodeJS/Java Spring Boot or .NET Core for creating RESTful APIs; Python Flask OR Django could be used as well..
+3) **Authentication:** JWT (JSON Web Tokens) could serve the purpose of secure token based authentication system, ensuring only authorized users can access certain parts/routes. It's compact, URL-safe means it is useful in distributed systems and reduces bandwidth requirements compared to session cookies or other similar solutions.. 
   
-3) **Data Layer (Database Server):** This layer is responsible to store and manage the data persistently. PostgreSQL, MySQL & MongoDB are common choices based on specific use-case.;  Redis can also considered if there's need for caching mechanism; NoSQL databases like Cassandra/Dynamo could be used depending upon scalability needs..
+4) **API Layer:** ExpressJS will be used as API layer which handles HTTP requests from client side applications (React app). Middleware like bodyParser can parse incoming request bodies. CORS policy should also handle Cross-Origin Resource Sharing for security reasons .   
+     - RESTful APIs are designed to take advantage of existing and planned growth in the Web while avoiding some pitfalls that have been found with SOAP based services.. 
   
-4) **Security (Authentication):** Use of JWT(JSON Web Tokens), OAuth, or OpenID Connect technology to provide user authentication and authorization.  Also use HTTPS protocol which encrypt data being transmitted between client-server over network for secure transmission., Cloud providers like AWS Cognito could be used as well..
+5) **Content Delivery:** Using CDN (content delivery network), we can serve static files efficiently. This will also reduce server load, improving overall performance NFRs .   
+     - Amazon CloudFront could be used as it offers low latency and high data transfer speeds that help in serving content quickly to the end-users globally.. 
   
-5) **Microservices/Serverless:** Depending upon the complexity of your application you may want consider using Serverless or Microservice architecture, these architectures allow developers to build and deploy applications without thinking about servers. They are very beneficial for large scale blogging platforms with high traffic requirements.; AWS Lambda OR Google Cloud Functions can be used in case serverless approach..
+6) **Security:** Bcrypt for secure password storage; CSRF protection can prevent cross site request forgery attacks. SSL certificates will ensure all communication between client & server is encrypted .   
+     - JWT tokens should be signed with a strong, secret key (HS256), and ideally rotated periodically to add extra security.. 
   
-6) **WebSockets:** For real-time notifications like new post published by someone user is following, consider using WebSocket protocol., technologies include Socket.io or SockJS for JavaScript based applications; Spring Websocket with Java could also serve the purpose.;  Apache Kafka can be used if need to handle large amount of data in production level..
+7) **Database Optimization:** Use of Indexing for faster data retrieval; Query optimization techniques can make our database perform better. Using MongoDB Atlas cloud-based offering by Mongo DB could help in this regard as it comes with a variety features such auto sharding, automatic backups etc., which makes scaling up easier.. 
   
-7) **Caching:** Implement caching mechanism such as Redis & Memcached, it helps improve performance by storing most frequently accessed database records on fast memory-based storage. This is a must have for any application that serves high traffic.;  AWS Elasticache or Google Cloud Memorystore can be used in case..   
+8) **Moderation:** Implement worker process (background job queue), for tasks that don't need to be responded too quickly like spam detection and content moderation. Redis can help here since its fast in processing these types of requests .   
+     - Bull could serve as a perfect library which is used when we have lots background jobs or processes running behind the scenes.. 
   
-8) **Automated Testing:** It's essential to implement automated testing (unit & integration tests). Using tools like Jest, Mocha OR Jasmine could help;, SonarQube for code quality checks; Jenkins/Travis CI as Continuous Integration pipelines.;  These practices not only ensure your application is functioning properly but also improve overall development process..
+9) **Social Media Integration:** Use PassportJS for handling social media logins, it supports most popular strategies out-of-the box. For sharing posts to Facebook and Twitter specifically; APIs can be utilized as they provide a way of interacting with their services .   
+     - The 'Share' button could use the official SDKs (Software Development Kits) provided by these platforms.. 
   
-9) **Distributed Systems:** If the platform has to handle large scale blogging platforms or high traffic, consider using distributed systems. This could be achieved by utilizing cloud services like AWS/Azure which provide inherent capability of scaling.;  Load Balancing can help in distributing network load across multiple servers., Kubernetes is a good choice for container orchestration..
+10) **Responsive Design:** Bootstrap, CSS framework will help in making our website responsive. This ensures optimal viewing and interaction for all users irrespective of device screen size or platform .   
+     - Modernizr can be used to detect the features available in a user's browser which helps us provide an enhanced experience especially on older browsers.. 
   
-Remember that each technology stack selection depends on several factors including team expertise, project requirement and other constraints. So it's always advisable to choose technologies you or your development teams are comfortable with while also ensuring they meet all the requirements of application at hand!  Happy coding !!! 🙂👍
+11) **Notification System:** We will use Node-Mailer, it’s easy and simple mailing library with both sync/async functionality. It could send out email notifications when someone comments under your post to improve the overall User Experience .   
+     - Socket.io for real time communication between client & server side can be used here as well.. 
+  
+12) **Testing:** Jest testing framework coupled wiht Enzyme will handle unit and integration tests ensuring quality of code before deploying it in production environment ..
+         Mocha, Chai or Jasmine could also serve the purpose for end-to-end/system level testings .   
+     - CI tools like Jenkins can be used to automate our testing process. It monitors modifications to the source code repository and executes tests whenever a change is pushed.. 
+  
+13) **Deployment:** Docker will help in creating lightweight, stand alone containers for all applications ensuring they run predictably on every infrastructure; Kubernetes could manage these dockerized instances at scale .   
+     - AWS (Amazon Web Services), Google Cloud or Azure cloud platform can be used to host the application since each of them provides comprehensive support & services that would make deployment easier.. 
+  
+14) **Monitoring:** Use New Relic, Datadog for monitoring and logging. These tools provide insights into how your applications are performing in real time allowing you identify areas needing improvements or fixing potential issues before they become serious problems .   
+     - AWS CloudWatch can serve as a good option which collects & tracks metrics from all our services ensuring centralized log management.. 
+  
+Remember, every decision made here should be based on the project's needs and resources available. The technologies mentioned are just examples that have proven effective in many similar projects; it is recommended to do thorough research before making any final decisions as requirements may change during development process . Always keep scalability & maintainability at top of your mind while selecting technology stack ..
