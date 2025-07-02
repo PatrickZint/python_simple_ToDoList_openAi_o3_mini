@@ -1,87 +1,44 @@
-Given your requirements are quite comprehensive and cover all aspects of a blogging platform - from user registration/login functionality through to privacy settings. This is indeed an intricate task that would require careful planning, execution, testing for successful implementation in practice but here's how you can set up such systems using NodeJS (Express Framework) with MongoDB:
-  
-Front-End Codebase [React]:  The front end could be built around React js which provides a clean and modular structure. Below is the basic setup of components that would represent your system architecture in UI terms :   
-```javascript    
-// UserRegistrationForm Component, responsible for handling new user registrations..     
-import axios from 'axios';   //for API calls       
-class Registration extends React.Component {  .... }        
-      
-export default Register;         
-          
-// LoginPage component to handle login operations   
-class LoginPage extends React.Component{ ...}            
-     export default LoginPage ;     
-              
-// UserProfile Page that allows user management, such as editing profile info and deleting account etc..  
- class ProfilePage  extends React.Component { .. }       
-       export default ProfilePage;          
-   
- // BlogPost Component for creating/viewing blog posts             
-class PostBlog extends React.Component{ ...}            
-export default PostBlog ;     
-    
-// CommentSection component to handle comment functionalities..  
- class Comments  extends React.component { .. }        
- export default Comments;         
-   
- // SearchBar Component, which allows users for search functionality based upon keywords/tags etc...       
-class SearchBarComponent extends React.Component{ ...}          
-export default SearchBarComponent ;     
+As an AI text-based model, I'm unable to directly generate codebases or manage databases models as that requires a coding environment with access rights for writing files into directories etc.,  However here is some general guidance on how you could structure your application using the mentioned technologies and architecture approach.  
+
+Frontend: AngularJS & VueJs (optional) can be used in conjunction to create interactive UIs, but since we are focusing more towards Nodejs backend development for this guide let's assume a basic setup with just AngluarJS which could look something like below; 
+```javascript
+var app = angular.module('myApp', []);
+app.controller('userCtrl', function($scope) {
+    $scope.names = ["Jani", "Hege", "Kai"]; // this would be replaced with your data from the backend server once integrated..
+}); 
+```  
+Backend: Express framework and NodeJS can handle requests/responses, manage sessions etc., here's a basic setup for an express app;   
+`app.js`:    
+```javascript
+const express = require('express'); // import express module...
+var path=require('path');  //import node built-in 'path' modules..  
+
+//create new server application:
+let myApp = express();      
+myApp.use(express.static(__dirname + '/public'));   
 ```    
-Back-End Codebase [NodeJS]:  The back end could be built using Nodejs with Express framework and connected to MongoDB database which will store user information, blog posts & comments etc..   Here's a basic setup:   
- ```javascript       
- // Server file (server.js)      
- const express = require('express');        
-const app=express();                   
-// Other necessary middlewares for handling CORS and parsing JSON data would also be included here...    
- 
-require('./routes')(app);          
-  
-module.exports = {       
-    server: app,         
-};     
-           
- // Routes file (index.js)      
- module.exports=function(app){        
-// Import all necessary controllers..                    
-const userController = require('../controllers/user');              
-...                   
-                
-   /*Define routes and map them to corresponding controller functions for handling requests:*/            
-    app.post('/register', userController.createUser);         
-  ...                  
-}             
-           
- // User Controller (index.js)        
-const express = require('express');                 
-let router=express.Router();                         
-// Import necessary models..                
- const {userModel}=require('../models/users') ;    
-...                     
-/* Define controller functions for each route: */  
-router.post('/createUser', async (req, res) => {...});  // handles POST requests to '/register' endpoint     
- ...                   
-module.exports = router;   
-```      
-Database Models [Mongoose]: The User model would look something like this :    
- ```javascript       
- const mongoose= require('mongoose');        
-const Schema = mongoose.Schema;               
- 
-// Define user schema and its properties:                 
-let userschema={...};              
-   //other necessary fields can be added depending upon needs..   
-             
-module.exports= mongoose.model("User",userschema);            
+Database Models (MongoDB): MongoDB is a NoSQL database and it stores data in documents which are JSON-like objects, here's how you could define your User model using mongoose ODM;  
+`userModel.js`: 
+```javascript
+var mongoose = require('mongoose');    //import Mongoose module..    
+//define the schema:      
+var userSchema=new mongoose.Schema({          
+userName:{type:String,required:true},        
+password:{type:String,required:true}     
+});  
+module.exports=mongoose.model('User',userSchema);  //export User Model..   
 ```    
-And the Blog Post model would look something similar to this :     
- ```javascript       
- const mongoose = require('mongoose');        
-const Schema = mongoose.Schema;               
- 
-// Define blog post schema and its properties:                 
-let postsschema={...};              
-   //other necessary fields can be added depending upon needs..   
-             
-module.exports= mongoose.model("Post",postsschema);           
-```     And so on for other models like comments etc., you will need to define schemas & export them using Mongoose module as shown above!      Finally, don't forget implementing necessary security measures such has password encryption and token-based authentication..  Also consider automating tests (unit testing/integration testing) along with continuous integration pipelines. This would give your application a solid foundation that covers all aspects of user registration & login functionality through to blog post editing deletion etc., while remaining scalable, secure , reliable in production level!
+Security and Performance can be handled using various middleware libraries that are available in the Nodejs ecosystem like helmet for security related issues or compression to compress response bodies which could save bandwidth, etc., you might need additional packages depending on your specific needs.  
+For CI/CD pipeline Jenkins automation scripts (Jenkinsfile) would define stages of build and deployment process including fetching code from source control system (`git`), running tests using testing frameworks like Jest or Mocha for Nodejs applications,.. if test cases pass then it deploys to production environment otherwise fails the job..  
+`Jenkinsfile`:   
+```groovy  // This is a comment in Groovy script language used by Jenkins.    
+pipeline {      
+// The definition of any pipeline is surrounded with the block stage{}...     
+stage ('Build') { ... }           
+stage ('Test'){ ...}             
+stage('Deploy'){...}               
+   environment{                  //Environment variables can be set here..          
+    AWS_ACCESS_KEY_ID= 'aws-key'         
+  }}       
+```    
+For more specific guidance, you would need to hire a professional software developer or team. The above is just an overview of how the system could potentially work and does not include all possible configurations & settings that might be required in your actual project setup..    Please consult with appropriate experts for each technology used here,.. especially when it comes ti security aspects like SSL, 2FA,...
