@@ -1,0 +1,95 @@
+Okay, this is an *excellent* system specification! You've done a thorough job covering all necessary aspects - functional requirements, non-functional requirements, environment profile, and even identified crucial open questions. It’s clear, well-structured, and provides a strong foundation for development.
+
+Now, let's translate this into a high-level system architecture diagram and accompanying component design with technology stack selection.  I'll focus on the initial implementation using Tkinter as specified, but will also include notes about potential future expansions.
+
+**1. High-Level System Architecture Diagram (Conceptual)**
+
+```
++---------------------+     +-------------------------+     +-----------------------+
+|    User Interface   | --> | Calculation Engine      | --> |  Input Validator      |
+| (Tkinter GUI)       |     | (Core Logic, Arithmetic)|     | (Data Sanitization)   |
++---------------------+     +-------------------------+     +-----------------------+
+        ^                               |                       |
+        |                               |                       |
+        | User Interaction             |  Calculation Result    | Validated Input
+        |                               |                       |
+        +-------------------------------+                       +
+
++---------------------+
+|   Error Handling   |
+| (Centralized Error |
+|   Management)      |
++---------------------+
+```
+
+**2. Component Design & Technology Stack Selection**
+
+Here's a breakdown of each component and the technologies to be used, aligned with your specifications:
+
+*   **A. User Interface (UI) - Tkinter GUI Module (`ui_module`)**
+
+    *   **Technology:** Python + Tkinter
+    *   **Responsibilities:**
+        *   Displaying numerical input field.
+        *   Presenting operation buttons (+, -, *, /).
+        *   Rendering the calculated result.
+        *   Handling button clicks and user interactions (CE, AC, equals).
+        *   Displaying error messages to the user.
+    *   **Key Classes/Functions:**
+        *   `CalculatorGUI`:  Main class responsible for creating the Tkinter window and widgets.
+        *   `on_button_click(event)`: Handles button click events (numbers, operators, equals).
+        *   `clear_entry()`: Clears the current input field.
+        *   `all_clear()`: Resets the calculator state.
+        *   `display_error(message)`: Displays an error message in the UI.
+
+*   **B. Calculation Engine (`calculation_engine`)**
+
+    *   **Technology:** Python 3.x (core logic)
+    *   **Responsibilities:**
+        *   Performing arithmetic calculations based on user input and selected operation.
+        *   Implementing division by zero error handling.
+        *   Managing overflow/underflow conditions.
+        *   Maintaining the state of the current calculation (operand1, operator, operand2).
+    *   **Key Classes/Functions:**
+        *   `CalculationEngine`:  Class responsible for managing calculations.
+        *   `calculate(operand1, operator, operand2)`: Performs the actual calculation and returns the result or an error message.
+        *   `handle_division_by_zero()`: Returns "Error: Division by zero."
+
+*   **C. Input Validator (`input_validator`)**
+
+    *   **Technology:** Python 3.x (Regular Expressions)
+    *   **Responsibilities:**
+        *   Validating user input to ensure it consists of only numeric characters and a decimal point.
+        *   Preventing potentially malicious input that could be injected into calculations.
+    *   **Key Classes/Functions:**
+        *   `InputValidator`:  Class responsible for validating the input string
+        *   `is_valid_input(input_string)`: Uses regular expressions to validate the input and returns True or False
+
+*   **D. Error Handling (Centralized)**
+
+    *   **Technology:** Python's `try...except` blocks, logging module.
+    *   **Responsibilities:**
+        *   Catching exceptions raised by the Calculation Engine and Input Validator.
+        *   Logging errors for debugging purposes.
+        *   Displaying user-friendly error messages in the UI.
+
+**3. Technology Stack Summary Table**
+
+| Component             | Technology                | Purpose                                      |
+| --------------------- | ------------------------- | -------------------------------------------- |
+| User Interface         | Python + Tkinter           | GUI development and event handling          |
+| Calculation Engine     | Python 3.x                 | Arithmetic operations, error handling      |
+| Input Validator        | Python 3.x (Regex)        | Data sanitization and input validation       |
+| Error Handling         | Python `try...except`, logging | Centralized exception management           |
+| Version Control          | Git                      | Code versioning & collaboration              |
+
+**4. Considerations for Future Expansion (Beyond Initial Scope)**
+
+*   **GUI Framework:**  Consider migrating to PyQt or Kivy if more advanced GUI features and cross-platform compatibility are required. These offer better widget customization and performance compared to Tkinter.
+*   **Order of Operations (PEMDAS/BODMAS):** Implementing this would require a significant rewrite, potentially using a parsing library like `ast` to evaluate expressions with parentheses.
+*   **Memory Functions:**  Add memory storage and manipulation functionalities. This would involve adding new UI elements and modifying the Calculation Engine.
+*    **Deployment**: Containerization using Docker could simplify deployment across different environments.
+
+
+
+This detailed system architecture provides a clear roadmap for developing your Python Calculator application, addressing both immediate requirements and potential future enhancements. The modular design promotes maintainability and testability. Remember to continually revisit these specifications as development progresses and stakeholder feedback is gathered!
