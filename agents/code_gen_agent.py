@@ -10,11 +10,12 @@ class CodeGenerationAgent:
 
         # Generate codebase
         prompt = (
-            f"You are a software engineer. Based on the following system architecture and specifications, "
-            f"generate the full codebase including front-end code, back-end code, and database models.\n\n"
-            f"System Architecture:\n{architecture}\n\n"
-            f"System Specifications:\n{specifications}"
+           f"You are a software engineer. Based on the following system architecture and specifications, "
+           f"generate the full codebase including front-end code, back-end code, and database models.\n\n"
+           f"System Architecture:\n{architecture}\n\n"
+           f"System Specifications:\n{specifications}"
         )
+
         codebase = self.llm.get_chat_response(prompt)
 
         # Save codebase

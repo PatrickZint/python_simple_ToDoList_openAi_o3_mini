@@ -22,7 +22,7 @@ def main():
     llm_reasoner = LLMReasoner()
     # Initialize GitHub manager with a personal access token and repository name
     # These are from the newly created GitHub repository that will be used to store the generated code
-    github_manager = GitHubManager(os.getenv('GITHUB_TOKEN'), 'erste_tests')
+    github_manager = GitHubManager(os.getenv('GITHUB_TOKEN'), 'python_calculator_gemma3_12b_it')
 
 
 
