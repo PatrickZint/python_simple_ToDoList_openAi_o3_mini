@@ -1,288 +1,307 @@
-### High-Level System Architecture for Simple Python Calculator
+# **High-Level System Architecture for Simple Calculator Application**
 
-This document presents the high-level system architecture for the **Simple Python Calculator** based on the provided system specifications. The architecture follows the **Model-View-Controller (MVC)** design pattern to ensure modularity, maintainability, and scalability. Additionally, the chosen technology stack aligns with the project requirements and facilitates efficient development and deployment.
+## **1. Introduction**
 
----
+This document presents the high-level system architecture for the **Simple Calculator** application as detailed in the provided System Specifications. The architecture outlines the primary components, their interactions, and the selected technology stack to ensure the application is robust, maintainable, and scalable.
 
-## 1. Architectural Overview
+## **2. Architectural Overview**
 
-The MVC architectural pattern separates the application into three interconnected components:
+The Simple Calculator adheres to the **Model-View-Controller (MVC)** architectural pattern, promoting separation of concerns and enhancing maintainability. The MVC structure divides the application into three interconnected components:
 
-1. **Model:** Manages the core logic and data of the application.
-2. **View:** Handles the graphical user interface (GUI) and user interactions.
-3. **Controller:** Acts as an intermediary between the Model and View, processing user inputs and updating the View accordingly.
+- **Model:** Manages the core arithmetic logic and data handling.
+- **View:** Handles the graphical user interface (GUI) presentation.
+- **Controller:** Facilitates communication between the Model and View, managing user inputs and application flow.
 
-This separation of concerns enhances code readability, maintainability, and facilitates future enhancements.
+### **2.1 MVC Diagram**
 
----
+```
++----------------+        +----------------+        +----------------+
+|                |        |                |        |                |
+|     View       | <----> |   Controller   | <----> |     Model      |
+| (Tkinter GUI)  |        |                |        | (Calculator    |
+|                |        |                |        |   Engine)      |
++----------------+        +----------------+        +----------------+
+```
 
-## 2. Component Design
+## **3. Component Design**
 
-### 2.1 Model
+### **3.1 Model Module**
 
 **Responsibilities:**
-- Perform all arithmetic operations (addition, subtraction, multiplication, division).
-- Validate numerical inputs.
-- Handle business logic related to calculations.
+- Execute arithmetic operations (addition, subtraction, multiplication, division).
+- Manage calculation history and memory functions (if implemented).
 
 **Components:**
-- **Calculator Engine:** Contains functions for each arithmetic operation.
-- **Input Validator:** Ensures that inputs are valid numbers and checks for division by zero.
 
-**Interactions:**
-- Receives inputs from the Controller.
-- Returns computation results or error statuses to the Controller.
+1. **CalculatorEngine**
+   - **Description:** Core class responsible for performing all arithmetic computations.
+   - **Responsibilities:**
+     - Parse and evaluate arithmetic expressions.
+     - Handle decimal operations with precision.
+     - Manage error states such as division by zero.
 
-### 2.2 View
+2. **MemoryManager**
+   - **Description:** Manages memory storage functions (M+, M-, MR, MC).
+   - **Responsibilities:**
+     - Store and retrieve memory values.
+     - Modify memory based on user interactions.
+
+3. **HistoryManager**
+   - **Description:** Maintains a log of past calculations.
+   - **Responsibilities:**
+     - Record each calculation and its result.
+     - Provide access to the history log for display in the UI.
+
+### **3.2 View Module**
 
 **Responsibilities:**
 - Render the GUI using Tkinter.
-- Display input fields, operation buttons, result display area, and error messages.
-- Capture user interactions (e.g., button clicks, keyboard inputs).
+- Display inputs, results, and error messages.
 
 **Components:**
-- **Display Frame:** Shows inputs and results.
-- **Button Panel:** Contains buttons for operations (`+`, `−`, `×`, `÷`), equals (`=`), and clear (`C/AC`).
-- **Layout Manager:** Organizes widgets using Tkinter's grid system.
-- **Styling Module:** Manages the color scheme, typography, and overall aesthetics.
 
-**Interactions:**
-- Sends user inputs and actions to the Controller.
-- Receives updates from the Controller to reflect changes in the GUI.
+1. **DisplayScreen**
+   - **Description:** Shows current inputs and results.
+   - **Features:**
+     - Large, readable font.
+     - Dynamic updating based on user input and operations.
 
-### 2.3 Controller
+2. **ButtonPanel**
+   - **Description:** Contains all calculator buttons arranged in a grid.
+   - **Features:**
+     - Numeric buttons (0-9), decimal point, operators (+, -, *, /).
+     - Function buttons ('C', '=', and optional memory/history buttons).
+     - Visual feedback on interactions (hover, click effects).
+
+3. **HistoryPanel** (Optional)
+   - **Description:** Displays a scrollable history of recent calculations.
+   - **Features:**
+     - Lists previous expressions and their results.
+     - Allows users to review past calculations.
+
+4. **ThemeManager** (Optional)
+   - **Description:** Handles UI theming options (e.g., light and dark modes).
+   - **Features:**
+     - Allows users to switch themes.
+     - Dynamically updates the UI based on selected theme.
+
+### **3.3 Controller Module**
 
 **Responsibilities:**
-- Handle communication between the Model and View.
-- Process user inputs and trigger corresponding Model operations.
-- Update the View based on Model responses.
+- Handle user interactions from the View.
+- Invoke appropriate Model functions based on user input.
+- Update the View with results or error messages.
 
 **Components:**
-- **Event Handler:** Captures events from the View (e.g., button clicks, keyboard inputs).
-- **Operation Manager:** Determines which arithmetic operation to perform based on user input.
-- **Error Handler:** Processes errors from the Model and instructs the View to display appropriate messages.
 
-**Interactions:**
-- Receives user actions from the View.
-- Invokes Model functions to perform calculations.
-- Updates the View with results or error messages based on Model responses.
+1. **InputHandler**
+   - **Description:** Processes button clicks and keyboard inputs.
+   - **Responsibilities:**
+     - Capture and interpret user inputs.
+     - Translate inputs into actions (e.g., number entry, operation selection).
 
-### 2.4 Supporting Components
+2. **OperationHandler**
+   - **Description:** Determines and executes the selected arithmetic operation.
+   - **Responsibilities:**
+     - Invoke CalculatorEngine methods based on user operations.
+     - Manage operation precedence and expression evaluation.
 
-#### 2.4.1 Error Handling Module
+3. **ErrorHandler**
+   - **Description:** Manages and displays error messages.
+   - **Responsibilities:**
+     - Detect and handle errors such as division by zero or invalid inputs.
+     - Display user-friendly error messages without exposing technical details.
 
-**Responsibilities:**
-- Manage all error-related functionalities.
-- Display user-friendly error messages.
-- Log errors for debugging purposes (optional).
+## **4. Technology Stack Selection**
 
-**Interactions:**
-- Integrates with the Controller to handle exceptions and propagate error messages to the View.
+The technology stack is chosen to align with the project constraints and functional requirements, ensuring compatibility, performance, and ease of development.
 
-#### 2.4.2 Logging Module (Optional)
+| **Component**      | **Technology**                            | **Justification**                                                 |
+|--------------------|-------------------------------------------|-------------------------------------------------------------------|
+| **Programming Language** | Python 3.6+                             | Widely used, supports Tkinter, adheres to project constraints.     |
+| **GUI Framework** | Tkinter                                   | Standard Python library, cross-platform compatibility.            |
+| **Testing Framework** | unittest / pytest                        | Robust testing capabilities, supports unit and integration tests. |
+| **Packaging Tool** | PyInstaller                               | Converts Python scripts into standalone executables.              |
+| **Version Control** | Git                                       | Industry-standard version control system.                         |
+| **IDE**           | Visual Studio Code or PyCharm              | Provides comprehensive development tools and support.             |
+| **Virtual Environment** | venv                                    | Manages project-specific dependencies.                            |
+| **Logging**       | Python’s built-in logging module           | Facilitates error tracking and debugging.                        |
+| **Documentation** | Sphinx or Markdown                         | Supports comprehensive documentation generation.                  |
 
-**Responsibilities:**
-- Record errors and significant events for debugging and maintenance.
-- Store logs in a file for future reference.
+### **4.1 Python Libraries**
 
-**Interactions:**
-- Links with the Error Handling Module to log captured errors.
+- **Tkinter:** For building the GUI.
+- **Logging:** To implement logging mechanisms for error tracking.
+- **unittest/pytest:** For writing and executing test cases.
 
-#### 2.4.3 Testing Suite
+### **4.2 Optional Libraries**
 
-**Responsibilities:**
-- Conduct unit and integration tests to ensure application reliability.
-- Automate testing processes for continuous integration.
+- **Pillow:** If image support is needed for theming or button icons.
+- **Tkinter Themes:** For enhanced UI theming beyond default capabilities.
 
-**Interactions:**
-- Interfaces with all application modules to validate functionality and performance.
+## **5. System Architecture Diagram**
 
----
+Since visual diagrams cannot be rendered in this text format, the system architecture can be conceptually understood as follows:
 
-## 3. Technology Stack Selection
+1. **User Interaction:**
+   - Users interact with the **View** (GUI) via mouse clicks or keyboard inputs.
+   
+2. **Controller Processing:**
+   - The **Controller** captures these inputs through the **InputHandler**.
+   - **InputHandler** interprets the inputs and delegates actions to the **OperationHandler** or **ErrorHandler** as needed.
 
-The following table outlines the selected technologies aligned with each component of the architecture:
+3. **Model Operations:**
+   - The **OperationHandler** invokes methods from the **Model** (e.g., **CalculatorEngine**) to perform arithmetic calculations.
+   - The **CalculatorEngine** processes the operations and returns results or errors.
 
-| **Component**          | **Technology/Tools**         | **Purpose**                                                                                                  |
-|------------------------|------------------------------|--------------------------------------------------------------------------------------------------------------|
-| **Programming Language** | Python                        | Core language for application development due to its simplicity and rich library support.                     |
-| **GUI Library**        | Tkinter                       | Provides standard GUI elements integrated with Python, ideal for simple desktop applications.                 |
-| **Architecture Pattern** | Model-View-Controller (MVC)   | Ensures separation of concerns, enhancing modularity and maintainability.                                   |
-| **Version Control**    | Git                           | Manages source code versions, facilitates collaboration, and tracks history.                                |
-| **Repository Hosting** | GitHub/GitLab/Bitbucket        | Hosts the Git repository, enabling code sharing and collaboration among developers.                         |
-| **Testing Framework**  | unittest or pytest             | Facilitates the creation and execution of unit and integration tests to ensure code reliability.             |
-| **Logging Library**    | logging (Python Standard Library) | Handles error logging and tracking for debugging and maintenance purposes.                                  |
-| **Executable Packaging** | PyInstaller                   | Converts Python scripts into standalone executables for distribution across different operating systems.       |
-| **Integrated Development Environment (IDE)** | PyCharm, VS Code, or IDLE | Provides a robust environment for code development, debugging, and version control integration.               |
-| **Documentation Tools** | Markdown or Sphinx             | Assists in creating comprehensive user and developer documentation.                                          |
+4. **View Update:**
+   - The **Controller** receives the results and updates the **View** (e.g., **DisplayScreen**) accordingly.
+   - In case of errors, the **ErrorHandler** ensures that appropriate messages are displayed without disrupting the application flow.
 
----
+5. **Additional Features:**
+   - **MemoryManager** and **HistoryManager** handle memory functions and calculation history, interacting with both **Model** and **View** as necessary.
+   - **ThemeManager** allows dynamic theming, updating the **View** based on user preferences.
 
-## 4. Detailed Component Interactions
+## **6. Data Flow**
 
-### 4.1 User Interaction Flow
+The data flow within the system follows a unidirectional path to maintain clarity and reduce complexity:
 
-1. **User Input:**
-   - The user enters numerical values into the input fields and selects an arithmetic operation by clicking the corresponding button or using keyboard shortcuts.
+1. **Input Acquisition:**
+   - User inputs are captured by the **View** and passed to the **Controller**.
 
-2. **Event Handling:**
-   - The View captures the user action and notifies the Controller via the Event Handler.
+2. **Processing:**
+   - The **Controller** validates and processes inputs, interacting with the **Model** to perform calculations.
 
-3. **Processing:**
-   - The Controller retrieves the input values and the selected operation.
-   - It invokes the appropriate function in the Model's Calculator Engine to perform the computation.
+3. **Output Rendering:**
+   - Results or error messages are sent back to the **View** for display to the user.
 
-4. **Computation and Validation:**
-   - The Model processes the calculation, utilizing the Input Validator to ensure input integrity (e.g., checking for numeric values, preventing division by zero).
+4. **Optional Data Handling:**
+   - For memory and history features, the **Model** manages data persistence, while the **View** presents this data as needed.
 
-5. **Result Handling:**
-   - If the computation is successful, the Model returns the result to the Controller.
-   - If an error occurs (e.g., invalid input, division by zero), the Model communicates the error status to the Controller.
+## **7. Technology Stack Details**
 
-6. **View Update:**
-   - The Controller instructs the View to display the result or an error message accordingly.
-   - The View updates the Display Frame with the computation result or shows an appropriate error message.
+| **Layer**        | **Component**       | **Technology**  | **Purpose**                                         |
+|------------------|---------------------|------------------|-----------------------------------------------------|
+| **Frontend**     | GUI                 | Tkinter          | Renders the graphical interface for user interactions.|
+| **Backend**      | Arithmetic Logic    | Python Classes   | Executes arithmetic operations and manages data.    |
+| **Controller**   | Input and Operation | Python Modules   | Handles user inputs and orchestrates application flow.|
+| **Testing**      | Unit and Integration Tests | unittest/pytest   | Ensures code reliability and correctness.            |
+| **Packaging**    | Executable Bundling | PyInstaller      | Packages the application into standalone executables.|
+| **Version Control** | Code Management    | Git              | Manages code versions and collaboration.            |
+| **Development Environment** | IDE and Tools        | VS Code/PyCharm, venv | Facilitates efficient development and dependency management.|
 
-### 4.2 Error Handling Flow
+## **8. Component Interaction Details**
 
-1. **Error Detection:**
-   - During input validation or computation, the Model detects an error (e.g., non-numeric input, division by zero).
+### **8.1 User Interface (View)**
 
-2. **Error Propagation:**
-   - The Model communicates the error to the Controller, specifying the type and details of the error.
+- **DisplayScreen:** Updates in real-time based on user input and calculation results.
+- **ButtonPanel:** Each button is linked to the **InputHandler** in the Controller for processing.
+- **HistoryPanel:** Retrieves data from **HistoryManager** to display past calculations.
+- **ThemeManager:** Applies selected themes by adjusting UI element properties.
 
-3. **User Notification:**
-   - The Controller invokes the Error Handling Module to determine the appropriate user-facing message.
-   - The View displays the error message in the Display Area, guiding the user to rectify the issue.
+### **8.2 Controller Operations**
 
-4. **Logging (Optional):**
-   - The Error Handling Module, in conjunction with the Logging Module, records the error details for developer reference and debugging.
+- **Input Handling:**
+  - Captures events from the **View** (e.g., button clicks, key presses).
+  - Validates inputs and determines appropriate actions (e.g., append number, perform operation).
 
----
+- **Operation Execution:**
+  - Delegates calculation requests to **CalculatorEngine**.
+  - Handles the sequence and precedence of operations.
 
-## 5. Technology Stack Justification
+- **Error Management:**
+  - Intercepts errors from the **Model** and communicates them to the **View** via **ErrorHandler**.
 
-### 5.1 Programming Language: Python
+### **8.3 Model Computations**
 
-- **Advantages:**
-  - Readable and maintainable syntax.
-  - Extensive standard library and third-party packages.
-  - Strong community support.
-- **Alignment with Requirements:**
-  - Enables rapid development of a simple desktop application.
-  - Supports cross-platform compatibility, essential for reaching a broad user base.
+- **CalculatorEngine:**
+  - Parses arithmetic expressions.
+  - Computes results with precision handling for decimals.
+  - Detects and signals error states (e.g., division by zero).
 
-### 5.2 GUI Library: Tkinter
+- **MemoryManager & HistoryManager:**
+  - Store and retrieve data as per user interactions.
+  - Ensure data integrity and accessibility for the **View**.
 
-- **Advantages:**
-  - Integrated with Python, eliminating the need for external dependencies.
-  - Sufficient for creating simple and responsive GUIs.
-  - Lightweight and easy to learn.
-- **Alignment with Requirements:**
-  - Facilitates the creation of a clean and intuitive user interface as specified.
-  - Ensures compatibility across major operating systems (Windows, macOS, Linux).
+## **9. Technology Stack Justification**
 
-### 5.3 Architecture Pattern: Model-View-Controller (MVC)
+- **Python 3.6+:** Offers robust features, extensive libraries, and active community support, making it ideal for rapid development and maintenance.
+- **Tkinter:** As a built-in library, Tkinter ensures no additional dependencies are required, simplifying deployment and enhancing cross-platform compatibility.
+- **unittest/pytest:** Both frameworks provide comprehensive testing capabilities, crucial for maintaining code quality and reliability.
+- **PyInstaller:** Facilitates the creation of executables, enabling users to run the application without requiring a separate Python installation.
+- **Git:** Essential for version control, enabling collaborative development and tracking of changes over time.
 
-- **Advantages:**
-  - Enhances separation of concerns, making the application modular.
-  - Simplifies maintenance and future enhancements.
-  - Facilitates collaborative development by delineating responsibilities.
-- **Alignment with Requirements:**
-  - Addresses the need for maintainable and scalable code.
-  - Supports the addition of future enhancements, such as scientific functions or theme customization.
+## **10. Additional Considerations**
 
-### 5.4 Testing Framework: unittest/Pytest
+### **10.1 Scalability and Maintainability**
 
-- **Advantages:**
-  - Provides structured testing methodologies.
-  - Supports automated test execution.
-  - Facilitates test-driven development practices.
-- **Alignment with Requirements:**
-  - Ensures reliable and accurate arithmetic operations.
-  - Validates the seamless interaction between GUI components and underlying logic.
+- **Modular Design:** The separation of concerns via MVC ensures that individual components can be modified or extended without impacting others.
+- **Code Adherence to PEP 8:** Promotes readability and consistency, easing future maintenance and collaboration efforts.
+- **Comprehensive Documentation:** Facilitates onboarding of new developers and aids in long-term maintenance.
 
-### 5.5 Version Control: Git
+### **10.2 Security Practices**
 
-- **Advantages:**
-  - Robust version tracking and branching capabilities.
-  - Facilitates collaboration among multiple developers.
-  - Integration with various development tools and platforms.
-- **Alignment with Requirements:**
-  - Manages code changes efficiently.
-  - Supports team-based development and code reviews.
+- **Input Validation and Sanitization:** Prevents injection attacks and ensures that only valid data is processed.
+- **Error Message Management:** Avoids exposing sensitive information, maintaining application integrity.
+- **Dependency Control:** Limiting dependencies reduces the attack surface and simplifies security management.
 
-### 5.6 Executable Packaging: PyInstaller
+### **10.3 Testing Strategies**
 
-- **Advantages:**
-  - Simplifies distribution by converting Python scripts into standalone executables.
-  - Supports multiple operating systems.
-  - Reduces dependency management issues for end-users.
-- **Alignment with Requirements:**
-  - Facilitates easy deployment across Windows, macOS, and Linux.
-  - Enhances user experience by eliminating the need for manual Python installations.
+- **Unit Testing:** Ensures individual components function correctly under various scenarios, including edge cases.
+- **Integration Testing:** Validates the interaction between different modules, ensuring cohesive functionality.
+- **Usability Testing:** Enhances user experience by incorporating feedback and ensuring accessibility standards are met.
+- **Performance Testing:** Confirms that the application meets responsiveness and resource utilization requirements.
 
----
+### **10.4 Deployment and Distribution**
 
-## 6. High-Level Architecture Diagram
+- **Cross-Platform Executables:** Utilizing PyInstaller to create executables for Windows, macOS, and Linux ensures broad user accessibility.
+- **Version Control Integration:** Leveraging Git repositories (e.g., GitHub) facilitates collaboration and continuous integration/continuous deployment (CI/CD) practices.
 
-While a visual diagram cannot be rendered here, the following description outlines the component relationships:
+## **11. Conclusion**
 
-- **View Component:**
-  - Contains GUI elements (Display Frame, Button Panel).
-  - Sends user events to the Controller.
+The proposed high-level system architecture for the Simple Calculator application leverages the MVC design pattern to ensure a clean separation of concerns, fostering maintainability and scalability. By selecting a technology stack centered around Python and Tkinter, the architecture aligns with the project’s constraints and functional requirements, ensuring cross-platform compatibility and ease of development. Robust component design, coupled with comprehensive testing and adherence to best practices, positions the application for reliable performance and future enhancements.
 
-- **Controller Component:**
-  - Receives events from the View.
-  - Invokes corresponding functions in the Model.
-  - Sends results or error messages back to the View.
+# **Appendix: Summary of Components and Technologies**
 
-- **Model Component:**
-  - Processes arithmetic operations.
-  - Validates inputs.
-  - Returns results or error statuses to the Controller.
+| **Module**         | **Component**        | **Technology** | **Responsibilities**                                       |
+|--------------------|----------------------|----------------|------------------------------------------------------------|
+| **Model**          | CalculatorEngine     | Python         | Perform arithmetic operations, manage calculation logic.   |
+|                    | MemoryManager        | Python         | Handle memory functions (M+, M-, MR, MC).                 |
+|                    | HistoryManager       | Python         | Maintain a log of past calculations.                       |
+| **View**           | DisplayScreen        | Tkinter        | Display inputs, results, and error messages.               |
+|                    | ButtonPanel          | Tkinter        | Render calculator buttons with interactive feedback.       |
+|                    | HistoryPanel         | Tkinter        | (Optional) Show history of calculations.                   |
+|                    | ThemeManager         | Tkinter        | (Optional) Manage UI themes (light/dark).                  |
+| **Controller**     | InputHandler         | Python         | Process user inputs from buttons and keyboard.             |
+|                    | OperationHandler     | Python         | Execute operations based on user actions.                  |
+|                    | ErrorHandler         | Python         | Manage error detection and user notifications.             |
+| **Testing**        | Unit Tests           | unittest/pytest | Validate functionality of individual components.           |
+| **Packaging**      | Executables          | PyInstaller    | Create standalone application executables for distribution.|
 
-- **Supporting Components:**
-  - **Error Handling Module:** Interacts with the Controller and View to manage errors.
-  - **Logging Module:** Integrated with the Error Handling Module for recording errors.
-  - **Testing Suite:** Interfaces with all primary components to ensure functionality and reliability.
+# **Next Steps**
 
----
+To implement the proposed architecture effectively, the following steps are recommended:
 
-## 7. Deployment Strategy
+1. **Finalize Module Interfaces:**
+   - Define clear interfaces between Model, View, and Controller components to ensure seamless interaction.
 
-1. **Development Phase:**
-   - Utilize Git for source code management.
-   - Employ an IDE like PyCharm or VS Code for efficient development.
-   - Write comprehensive unit and integration tests using `unittest` or `pytest`.
+2. **Develop Core Functionalities:**
+   - Begin with the **CalculatorEngine** to establish reliable arithmetic operations.
+   - Progress to building the **View** components using Tkinter, ensuring the UI aligns with design specifications.
 
-2. **Packaging:**
-   - Use PyInstaller to create standalone executables for Windows, macOS, and Linux.
-   - Test the packaged application across all target platforms to ensure compatibility.
+3. **Integrate Components:**
+   - Connect the **Controller** with both **Model** and **View**, facilitating effective communication and data flow.
 
-3. **Distribution:**
-   - Host the executable files on platforms such as GitHub Releases or a personal website.
-   - Provide documentation and user guides alongside the executable packages.
+4. **Implement Additional Features:**
+   - Gradually incorporate optional functionalities like memory management, history logging, and theming based on project timelines and priorities.
 
-4. **Maintenance:**
-   - Monitor user feedback and bug reports.
-   - Utilize version control features to manage updates and feature enhancements systematically.
+5. **Conduct Thorough Testing:**
+   - Develop and execute comprehensive test cases at each development stage to ensure quality and reliability.
 
----
+6. **Prepare for Deployment:**
+   - Utilize PyInstaller to package the application for distribution across supported operating systems.
 
-## 8. Future Scalability and Enhancements
+7. **Maintain Documentation:**
+   - Continuously update code documentation and user guides to reflect ongoing developments and feature additions.
 
-The modular MVC architecture and the chosen technology stack lay a solid foundation for future enhancements, such as:
-
-- **Advanced Mathematical Functions:** Incorporate scientific calculations like trigonometric functions, logarithms, and exponents.
-- **User Customization:** Allow users to customize themes, layouts, and font sizes for enhanced usability.
-- **History Log:** Implement a feature to track and display past calculations for user reference.
-- **Memory Functions:** Add functionalities like memory recall (MR), memory clear (MC), memory add (M+), and memory subtract (M-).
-- **Internationalization:** Support multiple languages to cater to a global user base.
-- **Mobile Application Version:** Extend the application to mobile platforms (iOS, Android) using frameworks like Kivy or BeeWare.
-
----
-
-## 9. Conclusion
-
-The proposed high-level system architecture for the Simple Python Calculator aligns with the detailed system specifications, ensuring a robust, user-friendly, and maintainable application. By leveraging the MVC design pattern and a carefully selected technology stack, the application is well-positioned to meet current requirements and accommodate future enhancements seamlessly.
+By adhering to this architectural blueprint, the Simple Calculator application is well-positioned to achieve its objectives of delivering a user-friendly, efficient, and reliable tool.
