@@ -1,420 +1,210 @@
-# High-Level System Architecture for Simple Calculator Application
-
-## **1. Introduction**
-
-This document presents a high-level system architecture for the **Simple Calculator** application developed in Python using the Tkinter library for the graphical user interface (GUI). The architecture is designed following the Model-View-Controller (MVC) pattern to ensure modularity, scalability, and ease of maintenance. The selected technology stack aligns with the system specifications, emphasizing usability, performance, reliability, and future extensibility.
+### High-Level System Architecture for Python-Based Simple Calculator
 
 ---
 
-## **2. Architecture Overview**
+#### **1. Architectural Overview**
 
-The Simple Calculator application follows the **MVC (Model-View-Controller)** architectural pattern, which separates the application into three interconnected components:
+The Python-Based Simple Calculator follows a **Modular Architecture** that encapsulates distinct functionalities into separate, interchangeable components. This segregation ensures maintainability, scalability, and ease of testing. The primary modules include:
 
-1. **Model:** Manages the core logic and arithmetic operations.
-2. **View:** Handles the GUI components and user interactions.
-3. **Controller:** Acts as an intermediary between the Model and View, processing user inputs and updating the UI accordingly.
-
-### **2.1 MVC Diagram**
-
-While a visual diagram cannot be presented in text, the following description outlines the interactions:
-
-- **User** interacts with the **View** (GUI).
-- **View** sends user inputs to the **Controller**.
-- **Controller** processes inputs by invoking methods in the **Model**.
-- **Model** performs computations and returns results to the **Controller**.
-- **Controller** updates the **View** with results or error messages.
+- **GUI Module**
+- **Logic Module**
+- **Error Handling Module**
+- **History Module** (Optional)
+- **Data Persistence Module** (if history is implemented)
 
 ---
 
-## **3. Component Design**
+#### **2. Architectural Diagram**
 
-### **3.1 Model Component**
+Below is a textual representation of the system architecture using a layered approach:
+
+```
++----------------------------------------------------------+
+|                     User Interface Layer                 |
+|----------------------------------------------------------|
+|                     GUI Module (Tkinter)                 |
+|  - Display Area (Entry/Label)                            |
+|  - Button Grid (Buttons for digits, operators, etc.)     |
+|  - History Panel (Optional Listbox)                      |
++----------------------------|-----------------------------+
+                             |
+                             v
++----------------------------------------------------------+
+|                    Application Logic Layer              |
+|----------------------------------------------------------|
+|                     Logic Module                          |
+|  - Arithmetic Operations (Addition, Subtraction, etc.)   |
+|  - Input Processing                                     |
+|  - Expression Evaluation                                |
+|                                                          |
+|                     Error Handling Module               |
+|  - Division by Zero Detection                           |
+|  - Input Validation                                     |
+|  - Exception Management                                 |
++----------------------------|-----------------------------+
+                             |
+                             v
++----------------------------------------------------------+
+|                   Data Management Layer                 |
+|----------------------------------------------------------|
+|                  History Module (Optional)               |
+|  - Calculation History Storage (In-Memory)              |
+|  - History Retrieval                                     |
++----------------------------------------------------------+
+```
+
+---
+
+#### **3. Component Design and Responsibilities**
+
+##### **3.1. GUI Module**
 
 **Responsibilities:**
+- Render the graphical user interface using Tkinter.
+- Handle user interactions such as button clicks and key presses.
+- Display inputs, results, and error messages.
 
-- Perform arithmetic operations: Addition, Subtraction, Multiplication, Division.
-- Validate user inputs.
-- Handle exceptions and error scenarios.
+**Components:**
+- **Display Area:** Shows current input and results using `Entry` or `Label` widgets.
+- **Button Grid:** Contains `Button` widgets for digits (0-9), decimal point, arithmetic operators (+, −, ×, ÷), clear (C), and equals (=).
+- **History Panel:** (Optional) Displays a list of past calculations using `Listbox` or similar widgets.
 
-**Modules:**
+**Interactions:**
+- Captures user inputs and forwards them to the Logic Module.
+- Receives results or error messages from the Logic Module to display to the user.
 
-- **Arithmetic Operations Module (`logic.py`):**
-  - Contains functions for each arithmetic operation.
-  - Example Functions:
-    - `add(a, b)`
-    - `subtract(a, b)`
-    - `multiply(a, b)`
-    - `divide(a, b)`
+---
 
-- **Validation Module (`validation.py`):**
-  - Validates numeric inputs.
-  - Checks for division by zero.
-  - Raises custom exceptions for invalid inputs or operations.
-
-**Technology Stack:**
-
-- **Programming Language:** Python 3.6+
-- **Libraries:** Standard Python libraries.
-
-### **3.2 View Component**
+##### **3.2. Logic Module**
 
 **Responsibilities:**
+- Manage the core calculation operations.
+- Process and evaluate arithmetic expressions.
+- Maintain the input buffer and manage the sequencing of operations.
 
-- Render the GUI using Tkinter.
-- Capture user inputs and interactions.
-- Display results and error messages.
-- Provide user guidance and accessibility features.
+**Components:**
+- **Calculator Engine:**
+  - **Input Buffer:** Stores the current expression being entered.
+  - **Expression Parser:** Parses the input buffer to identify numbers and operators.
+  - **Evaluator:** Computes the result based on the parsed expression.
 
-**Modules:**
+**Interactions:**
+- Receives input from the GUI Module.
+- Utilizes the Error Handling Module to validate and process inputs.
+- Sends results or error messages back to the GUI Module.
 
-- **UI Module (`ui.py`):**
-  - Constructs the main window and layouts using Tkinter widgets such as `Entry`, `Button`, `Label`, and `Frame`.
-  - Implements responsive design for different screen sizes.
-  - Integrates accessibility features like keyboard shortcuts and high-contrast themes.
+---
 
-- **Localization Module (`localization.py`):**
-  - Manages externalization of user-facing text for future localization.
-  - Loads language-specific resources based on locale settings.
-
-**Technology Stack:**
-
-- **GUI Library:** Tkinter (compatible with Python 3.6+)
-- **Localization:** Potential use of `gettext` or similar libraries for managing translations.
-
-### **3.3 Controller Component**
+##### **3.3. Error Handling Module**
 
 **Responsibilities:**
+- Detect and manage errors during input processing and calculation.
+- Provide meaningful error messages to the user without crashing the application.
 
-- Handle user events from the View.
-- Invoke corresponding Model operations.
-- Manage the data flow between Model and View.
-- Update the View with results or error messages.
+**Components:**
+- **Division by Zero Handler:** Checks for division operations where the denominator is zero.
+- **Input Validator:** Ensures that inputs follow the required format (e.g., single decimal point, no consecutive operators).
+- **Exception Manager:** Catches unforeseen exceptions and handles them gracefully.
 
-**Modules:**
+**Interactions:**
+- Works closely with the Logic Module to validate inputs and operations.
+- Communicates error states and messages to the GUI Module for user notification.
 
-- **Controller Module (`controller.py`):**
-  - Contains event handler functions for each operation button (Add, Subtract, Multiply, Divide).
-  - Implements logic to retrieve inputs from the View, invoke Model operations, and update the View.
+---
 
-**Technology Stack:**
-
-- **Programming Language:** Python 3.6+
-
-### **3.4 Utilities Component**
+##### **3.4. History Module (Optional)**
 
 **Responsibilities:**
+- Maintain a record of all calculations performed during the current session.
+- Allow users to view and interact with their calculation history.
 
-- Provide reusable helper functions.
-- Manage localization utilities.
-- Handle formatting of results.
+**Components:**
+- **History Storage:** An in-memory list or data structure that records each calculation.
+- **History Interface:** Provides methods to add, retrieve, and clear history entries.
 
-**Modules:**
-
-- **Utility Functions Module (`utilities.py`):**
-  - Functions for formatting numerical outputs.
-  - Helpers for error message formatting.
-
-- **Exception Classes Module (`exceptions.py`):**
-  - Defines custom exception classes for specific error scenarios (e.g., `DivisionByZeroError`, `InvalidInputError`).
-
-**Technology Stack:**
-
-- **Programming Language:** Python 3.6+
+**Interactions:**
+- Receives completed calculations from the Logic Module.
+- Interfaces with the GUI Module to display history to the user.
 
 ---
 
-## **4. Technology Stack Selection**
+#### **4. Technology Stack Selection**
 
-Based on the system specifications and design requirements, the following technology stack has been selected:
+- **Programming Language:** **Python 3.x**
+  - **Rationale:** Python offers rapid development capabilities, readability, and a rich set of libraries suitable for GUI applications.
 
-- **Programming Language:** Python 3.6 and above
-- **GUI Library:** Tkinter (built-in with Python)
-- **Testing Framework:** Pytest for unit and integration testing
-- **Packaging Tools:** PyInstaller or cx_Freeze for creating standalone executables
-- **Version Control:** Git for source code management
-- **Continuous Integration:** GitHub Actions or Travis CI for automated testing and deployment
-- **Localization Libraries:** `gettext` or similar for managing translations
+- **GUI Library:** **Tkinter**
+  - **Rationale:** Tkinter is the standard GUI library for Python, requiring no additional installations and providing sufficient widgets for a simple calculator.
 
-### **4.1 Justification for Technology Choices**
+- **Packaging Tools:** **PyInstaller** or **cx_Freeze**
+  - **Rationale:** These tools allow for creating standalone executables across different operating systems, facilitating easy distribution.
 
-- **Python & Tkinter:** Given the constraints, Python and Tkinter are suitable for rapid development of lightweight desktop applications with a straightforward GUI.
-- **Pytest:** Offers a simple yet powerful framework for writing and executing tests, ensuring code reliability.
-- **PyInstaller/cx_Freeze:** Facilitates bundling Python applications into standalone executables across multiple operating systems.
-- **Git:** Essential for version control, enabling collaborative development and tracking changes.
-- **Localization Libraries:** Preparing for future localization needs aligns with the requirement for multi-language support.
+- **Version Control:** **Git**
+  - **Rationale:** Essential for tracking changes, collaboration, and maintaining code history.
 
----
+- **Testing Framework:** **unittest** or **pytest**
+  - **Rationale:** Provides structured testing mechanisms to ensure code reliability and correctness.
 
-## **5. Interaction and Data Flow**
+- **Linters:** **pylint**, **flake8**
+  - **Rationale:** Enforce coding standards and identify potential code issues early in the development process.
 
-### **5.1 User Interaction Flow**
-
-1. **Input Phase:**
-   - User enters numerical values into the "Number 1" and "Number 2" input fields.
-
-2. **Operation Selection:**
-   - User selects an arithmetic operation by clicking the corresponding button (Add, Subtract, Multiply, Divide) or using keyboard shortcuts.
-
-3. **Processing Phase:**
-   - The **Controller** captures the event and retrieves input values from the **View**.
-   - Inputs are validated by the **Model**.
-   - If valid, the **Model** performs the computation.
-   - The result or an error message is returned to the **Controller**.
-
-4. **Output Phase:**
-   - The **Controller** updates the **View** with the result or displays an appropriate error message.
-
-### **5.2 Error Handling Flow**
-
-1. **Detection:**
-   - The **Model** detects errors such as invalid inputs or division by zero during validation.
-
-2. **Exception Raising:**
-   - Custom exceptions are raised to signal specific error conditions.
-
-3. **Controller Handling:**
-   - The **Controller** catches these exceptions and determines the appropriate response.
-
-4. **User Feedback:**
-   - The **View** displays user-friendly error messages, guiding the user to correct the input.
+- **Documentation Tools:** **Sphinx** or **MkDocs** (Optional)
+  - **Rationale:** Facilitate the creation of comprehensive and navigable documentation for future maintenance and enhancements.
 
 ---
 
-## **6. Component Interactions**
+#### **5. Component Interaction Flow**
 
-### **6.1 Detailed Component Communication**
+1. **User Interaction:**
+   - The user interacts with the **GUI Module** by clicking buttons or using the keyboard.
 
-- **View ↔ Controller:**
-  - **User Actions:** Button clicks, keyboard inputs.
-  - **Controller Response:** Event handling, invoking Model operations.
+2. **Input Processing:**
+   - The **GUI Module** captures these inputs and sends them to the **Logic Module**.
 
-- **Controller ↔ Model:**
-  - **Operation Invocation:** Calling arithmetic functions with user inputs.
-  - **Receiving Results:** Getting computation results or error notifications.
+3. **Expression Handling:**
+   - The **Logic Module** updates the input buffer and, upon receiving the equals (=) command, parses and evaluates the expression.
 
-- **Model ↔ Utilities:**
-  - **Validation:** Utilizing utility functions for input checks.
-  - **Exception Handling:** Raising and managing custom exceptions.
+4. **Error Detection:**
+   - Before evaluation, the **Logic Module** invokes the **Error Handling Module** to validate inputs and operations (e.g., checking for division by zero).
 
-- **Utilities ↔ Localization:**
-  - **Resource Management:** Loading and formatting localized strings.
+5. **Result Generation:**
+   - If inputs are valid, the **Evaluator** computes the result and sends it back to the **GUI Module** for display.
+   - If an error is detected, the **Error Handling Module** sends an appropriate error message to the **GUI Module**.
 
----
-
-## **7. Technology Stack Details**
-
-### **7.1 Programming Language**
-
-- **Python 3.6+:**
-  - Chosen for its simplicity, readability, and extensive library support.
-  - Ensures compatibility across major operating systems.
-
-### **7.2 GUI Framework**
-
-- **Tkinter:**
-  - Built-in Python library for creating desktop applications.
-  - Provides necessary widgets for building a user-friendly interface.
-  - Lightweight and requires no additional installations.
-
-### **7.3 Testing Framework**
-
-- **Pytest:**
-  - Supports both unit and integration testing.
-  - Facilitates writing clear and concise test cases.
-  - Integrates well with continuous integration pipelines.
-
-### **7.4 Packaging Tools**
-
-- **PyInstaller / cx_Freeze:**
-  - Packages Python applications into standalone executables.
-  - Supports Windows, macOS, and Linux platforms.
-  - Simplifies distribution by bundling dependencies.
-
-### **7.5 Localization Libraries**
-
-- **gettext:**
-  - Standard library for internationalization and localization.
-  - Manages translation of user-facing text.
-  - Supports dynamic language switching based on locale settings.
-
-### **7.6 Version Control and CI/CD**
-
-- **Git:**
-  - Essential for tracking code changes and collaboration.
-  - Facilitates branching, merging, and maintaining code history.
-
-- **GitHub Actions / Travis CI:**
-  - Automates testing, building, and deployment processes.
-  - Ensures continuous integration and delivery of code changes.
+6. **History Management (Optional):**
+   - Upon successful calculation, the **Logic Module** records the operation in the **History Module**.
+   - The **GUI Module** updates the History Panel to reflect the new entry.
 
 ---
 
-## **8. Deployment Strategy**
+#### **6. Technology Stack Justification**
 
-### **8.1 Packaging Executables**
+- **Python 3.x:** Chosen for its simplicity, readability, and extensive standard library, which accelerates development and ensures cross-platform compatibility.
 
-- **PyInstaller:**
-  - Generates standalone executables for distribution.
-  - Packages the Python interpreter and all dependencies.
-  - Supports creating executables for Windows, macOS, and Linux.
+- **Tkinter:** Selected as the GUI framework due to its integration with Python, ease of use for simple interfaces, and absence of external dependencies.
 
-### **8.2 Distribution Channels**
+- **Modular Design Approach:** Facilitates separation of concerns, making the application easier to maintain, test, and extend with additional features in the future.
 
-- **Direct Downloads:**
-  - Host executables on a dedicated website or repository (e.g., GitHub Releases).
+- **PyInstaller/cx_Freeze:** These tools are ideal for packaging Python applications into executables, ensuring that end-users can run the calculator without needing a Python environment set up.
 
-- **Package Managers:**
-  - Optionally distribute via platform-specific package managers (e.g., Homebrew for macOS, Chocolatey for Windows).
+- **Git:** Industry-standard version control system essential for collaborative development and maintaining code integrity.
 
-### **8.3 Update Mechanism**
-
-- **Manual Updates:**
-  - Provide users with updated executables for download.
-  - Include version information and changelogs.
-
-- **Automated Updates (Future Enhancement):**
-  - Implement an update checker that prompts users to download the latest version.
+- **Testing and Linters:** Ensuring code quality and reliability through systematic testing and adherence to coding standards reduces bugs and enhances maintainability.
 
 ---
 
-## **9. Security Considerations**
+#### **7. Additional Considerations**
 
-### **9.1 Input Validation and Sanitization**
+- **Security:** By avoiding the use of Python's `eval()` function for expression evaluation, the application minimizes security risks such as code injection. Implementing a custom parser or using safe evaluation libraries can enhance security.
 
-- **Prevent Code Injection:**
-  - Although the application handles basic arithmetic, inputs are strictly validated to be numeric.
-  
-- **Exception Handling:**
-  - Robust error handling prevents unexpected crashes and maintains application stability.
+- **Performance:** Given the simplicity of the calculator, performance bottlenecks are unlikely. However, adhering to efficient coding practices ensures responsiveness and meets the non-functional requirement of instantaneous calculations.
 
-### **9.2 Dependency Management**
+- **Scalability:** While the current scope is limited to basic arithmetic operations, the modular architecture allows for easy integration of advanced features like memory functions, scientific operations, or theming without significant restructuring.
 
-- **Virtual Environments:**
-  - Utilize `venv` to manage project dependencies, ensuring isolation from system-wide packages.
-
-- **Regular Updates:**
-  - Keep Python and all libraries up-to-date to incorporate security patches and improvements.
-
-### **9.3 Best Practices Compliance**
-
-- **Adherence to PEP 8 and PEP 257:**
-  - Ensures code quality and readability.
-  
-- **Secure Coding Standards:**
-  - Follow industry best practices to mitigate potential vulnerabilities.
+- **User Experience:** Employing responsive design principles within Tkinter ensures that the calculator remains usable and visually appealing across different screen sizes and resolutions.
 
 ---
 
-## **10. Testing Strategy**
+#### **8. Summary**
 
-### **10.1 Unit Testing**
-
-- **Scope:**
-  - Test individual functions in the Logic Module.
-  - Validate correct arithmetic computations.
-  - Ensure input validation functions correctly identify invalid inputs.
-
-- **Tools:**
-  - Pytest framework.
-
-### **10.2 Integration Testing**
-
-- **Scope:**
-  - Test interactions between UI, Controller, and Model.
-  - Ensure data flows seamlessly from user inputs to results display.
-
-- **Tools:**
-  - Pytest with Tkinter testing utilities or mock objects.
-
-### **10.3 User Acceptance Testing (UAT)**
-
-- **Scope:**
-  - Conduct testing sessions with end-users.
-  - Gather feedback on usability, functionality, and accessibility.
-
-- **Approach:**
-  - Create test scenarios based on use cases.
-  - Collect and incorporate user feedback for improvements.
-
-### **10.4 Automated Testing**
-
-- **Scope:**
-  - Integrate automated tests within the CI/CD pipeline.
-  - Ensure continuous quality assurance with every code change.
-
-- **Tools:**
-  - GitHub Actions or Travis CI to run tests on each commit or pull request.
-
-### **10.5 Performance Testing**
-
-- **Scope:**
-  - Ensure the application performs calculations and updates the UI without perceptible delays.
-  - Validate resource usage remains low even on lower-end machines.
-
-- **Approach:**
-  - Monitor CPU and memory usage during operation.
-  - Optimize code where necessary to enhance performance.
-
----
-
-## **11. Accessibility and Localization**
-
-### **11.1 Accessibility Features**
-
-- **Keyboard Navigation:**
-  - Implement tab navigation for input fields and buttons.
-  - Assign keyboard shortcuts for operations (e.g., Enter key to perform calculation).
-
-- **Visual Accessibility:**
-  - Use high-contrast color schemes to enhance visibility.
-  - Offer options to adjust font sizes for better readability.
-  - Ensure compatibility with screen readers by appropriately labeling UI components.
-
-### **11.2 Localization Readiness**
-
-- **Internationalization (i18n):**
-  - Externalize all user-facing text into separate resource files.
-  - Utilize localization libraries to manage translations.
-
-- **Locale Handling:**
-  - Detect and adapt to user locale settings for language, number formats, and decimal separators.
-
-- **Future Enhancement:**
-  - Design the architecture to support adding new languages with minimal changes to the core codebase.
-
----
-
-## **12. Maintainability and Extensibility**
-
-### **12.1 Modular Design**
-
-- **Separation of Concerns:**
-  - Distinct modules for UI, logic, and utilities ensure that changes in one area do not affect others.
-
-- **Ease of Updates:**
-  - Adding new features, such as advanced mathematical operations, can be achieved by extending the Model and updating the View accordingly.
-
-### **12.2 Documentation**
-
-- **Code Documentation:**
-  - Comprehensive docstrings and inline comments following PEP 257 conventions.
-  
-- **User Documentation:**
-  - Provide a user manual or in-app help section detailing functionalities and usage instructions.
-
-- **Developer Documentation:**
-  - Maintain documentation outlining the architecture, module interactions, setup instructions, and guidelines for contributing to the codebase.
-
-### **12.3 Version Control and Code Reviews**
-
-- **Git Repository:**
-  - Maintain a well-organized repository with clear commit messages.
-  
-- **Code Reviews:**
-  - Implement peer reviews to ensure code quality and facilitate knowledge sharing.
-
----
-
-## **13. Summary**
-
-The **Simple Calculator** application is architected with a focus on modularity, scalability, and user-centric design. By adhering to the MVC pattern, the system ensures clear separation of concerns, facilitating maintainability and future enhancements. The selected technology stack leverages Python's capabilities and Tkinter's simplicity to deliver a lightweight and responsive application across major operating systems. Comprehensive testing, robust error handling, and adherence to accessibility and localization standards further reinforce the application's reliability and readiness for diverse user bases. This architecture lays a solid foundation for developing a user-friendly calculator that meets both current requirements and anticipates future growth.
+The proposed high-level system architecture for the Python-Based Simple Calculator emphasizes a clear separation of concerns through modular design. Leveraging Python's strengths and Tkinter's capabilities, the architecture ensures that the application is maintainable, scalable, and user-friendly. By adhering to the outlined component responsibilities and technology stack, developers can efficiently implement a robust calculator that meets both functional and non-functional requirements.
