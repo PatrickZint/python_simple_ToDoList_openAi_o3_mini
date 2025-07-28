@@ -1,17 +1,120 @@
-Based on these system specifications, here are the high-level components and technology stack selections for this calculator application. 
+Below is a high-level system architecture design for the Simple Calculator software. This design organizes the system into clearly separated layers and modules, ensuring that the functional and non‐functional requirements are met, while providing a solid foundation for future extensibility.
 
-**Component Design:**  
-1) **Frontend**: This will be responsible to take input from users or display results in a user friendly interface (GUI). For GUI creation we can use frameworks like Tkinter which is included by default with Python, making it ideal due the functional requirements specified above for User Interface Interaction Features. 
-2) **Backend/Logic Engine:** These components handle calculations and interact directly to frontend component via APIs or events triggered from UI interactions on buttons etc., For this calculator application we can use a simple python script which will define functions as per Functional Requirements section, these are the core computational functionalities of our app that take inputs perform operations & return outputs. 
-3) **Data Validation:** This module validates data input by users before passing it to calculation engine ensuring only numerical values accepted and all others rejected preventing potential issues down line in application functioning based on Non-Functional Requirement: Security, Performance etc., We can implement this using python built-in functions or custom validation methods as specified above.
-4) **Error Handling:** This component will handle exceptions occurring during calculations/data validations ensuring smooth operations of our app without crashes and informing users about the issue in an informative way fulfilling Non Functional Requirement: Maintainability, Usability etc., For this we can implement try-except blocks for error handling as specified above. 
-5) **Logging:** This component records important events like errors or warnings that occurred during application runtime to monitor its performance over time and facilitate debugging if required,.. etc,. Python's built in logging library is suitable here fulfilling Non Functional Requirement: Logging And Monitoring..   We can log each operation with corresponding input, output & any exceptions.
-6) **Server/API:** If our calculator app needs to be accessed from different devices or through web interface then we need a server component which acts as an intermediary between frontend and backend,.. etc,. Python Flask framework could fulfill this requirement if it is necessary for the application..  It's lightweight, easy-to-use yet powerful tool fulfilling Non Functional Requirement: Scalability.
-    - **Technology Stack Selection:**  
-1) Frontend (Tkinter): This will be used to create GUI in Python which would interact with backend through defined APIs or events triggered from UI interactions on buttons,.. etc,.  It’s a standard python library so no need for additional setup and easy-to-use.   
-2) Backend/Logic Engine(Python Scripting language - General Purpose): This will contain the core computational logic of our application i.e., functions to handle arithmetic operations,...etc,. Python is chosen as it's versatile, powerful yet simple scripting Language fulfilling all functional requirements and nonfunctional ones like Security,.. etc,. 
-3) Data Validation (Built-in python methods/Custom validation): This component will validate user data before passing onto calculation engine ensuring only numeric values are accepted.   We can use Python’s built in functions or write custom validations as per our needs..   
-4) Error Handling(Try Catch blocks, Custom Exception handling - General Purpose Language feature): It handles exceptions and provides informative error messages,.. etc,.  This is a part of any programming language so no additional setup needed.   But for better maintainability can consider writing specific exception classes based on type or category.,..   
-5) Logging (Python’s in-built logging library - General Purpose Language feature): Used to log important events, errors & warnings,.. etc,. No need extra modules as Python provides built in libraries fulfilling Non Functional Requirement: Maintainability.  The logs will be helpful for debugging and monitoring purposes during the application runtime..  
-6) Server/API (Flask / Django - Web Frameworks ): If our calculator app needs to accessed from different devices or through web interface then we need a server component,.. etc,. Python has various frameworks like Flask, Django which are easy-to-use yet powerful fulfilling Non Functional Requirement: Scalability. It provides flexibility and extensibility for developing complex applications with multiple components.,..   
-Remember every application is unique so these guidelines might not apply in all cases but can be used as a base to design your system architecture,.. etc,. . Happy coding!. 😄👩‍💻  This high-level overview of the technology stack and component designs will facilitate easier understanding for development team while working on individual components.
+─────────────────────────────  
+1. Architectural Overview
+
+• Layered & Modular Architecture  
+  Presentation Layer – Handles user interaction through a Tkinter-based GUI.  
+  Business Logic Layer – Contains the core calculation functions (addition, subtraction, multiplication, division), input validation, and error handling.  
+  Exception Handling Module – Isolates error detection and reporting to produce user-friendly error messages.  
+  Testing Module – Encompasses unit and integration tests to validate each component and their interactions.
+
+• Clearly defined interfaces between modules ensure that changes to one module (for example, extending arithmetic functions or enhancing the GUI) can be done with minimal impact on others.
+
+─────────────────────────────  
+2. Component Design
+
+A. GUI Module (Presentation Layer)  
+  Responsibilities:  
+  ▪ Render the user interface using Tkinter.  
+  ▪ Display two input fields, controls (buttons) for arithmetic operations, and a designated output/error display area.  
+  ▪ Subscribe to user events (e.g., button clicks, field updates).  
+  ▪ Clear input fields and messages appropriately for repeated use.  
+  Interaction:  
+  ▪ Upon receiving events, the GUI module calls methods from the Calculator Module to perform the requested arithmetic operation.  
+  ▪ Receives calculation results or error messages and updates the display accordingly.  
+
+B. Calculator Module (Business Logic Layer)  
+  Responsibilities:  
+  ▪ Provide arithmetic operations: addition, subtraction, multiplication, and division.  
+  ▪ Validate inputs, ensuring both provided values are numeric.  
+  ▪ Handle specific conditions such as division by zero by invoking the Exception Handling Module.  
+  Design Considerations:  
+  ▪ Functions are designed to be stateless and independent to support unit testing.  
+  ▪ Extensible design that supports the future integration of additional operations (e.g., exponentiation, factorials).
+
+C. Exception Handling Module  
+  Responsibilities:  
+  ▪ Centralize error handling for both invalid inputs (non-numeric data, blank fields) and runtime exceptions (e.g., division by zero).  
+  ▪ Generate human-readable error messages following the GUI’s requirements (e.g., error messages in red text).  
+  Interaction:  
+  ▪ Called by the Calculator Module when an error condition is detected.  
+  ▪ Returns error strings that the GUI module then displays.
+
+D. Testing Module  
+  Responsibilities:  
+  ▪ Contain unit tests for each arithmetic and validation function using frameworks like unittest or pytest.  
+  ▪ Implement integration tests to simulate end-to-end GUI interactions (e.g., valid and invalid user input paths).  
+  ▪ Performance tests as needed (e.g., using tools such as locust) to verify the responsiveness criteria under extended conditions.  
+  Tools:  
+  ▪ Python testing frameworks (pytest/unittest)  
+  ▪ Continuous Integration (CI) pipelines for automated test runs.
+
+─────────────────────────────  
+3. Technology Stack Selection
+
+• Programming Language:  
+  Python 3.8 or higher  
+  ▪ Leverages modern language features, improved stability, and great community support.
+
+• GUI Framework:  
+  Tkinter (built-in with Python)  
+  ▪ Simple, lightweight, and sufficient for building the required user interface.
+
+• Development Environment & Tooling:  
+  Dependency Management: pipenv or virtualenv  
+  ▪ Ensures an isolated environment for managing dependencies and Python version consistency.  
+  Containerization (Optional): Docker  
+  ▪ Facilitates reproducible build environments and easier cross-platform deployment if needed in the future.  
+  Version Control: Git  
+  ▪ For code management, collaboration, and CI/CD integration.  
+  Linters & Code Formatters:  
+  ▪ Tools such as pylint, flake8, or black to enforce PEP 8 coding standards.
+
+• Testing Frameworks:  
+  unittest or pytest for unit testing and integration testing.  
+  Potential CI integration (e.g., GitHub Actions, Travis CI) to automate testing and code quality checks.
+
+─────────────────────────────  
+4. Data Flow & Module Interaction Diagram (High-Level)
+
+ [User] 
+  │
+  ▼
+ [GUI Module (Tkinter)]
+  │  • Captures input fields and button click.
+  │  • Validates UI-level interactions.
+  ▼
+ [Calculator Module]
+  │  • Validates inputs further (numeric, non-blank).
+  │  • Invokes arithmetic functions.
+  │  • Interacts with Exception Handling Module for errors.
+  ▼
+ [Exception Handling Module]
+  │  • Processes invalid inputs or runtime errors.
+  │  • Returns formatted error messages.
+  ▼
+ [Calculator Module]
+  │  • Returns calculation result or error message.
+  ▼
+ [GUI Module]
+  │  • Displays result/error message to the user.
+
+─────────────────────────────  
+5. Maintainability and Extensibility Considerations
+
+• Modularity:  
+  Each module is designed as a separate Python file or package, with clear interfaces to other components.
+  Well-documented code, following PEP 8 guidelines and extensive inline comments/documentation.
+
+• Future Enhancements:  
+  Additional arithmetic functions can be added in the Calculator Module without impacting the GUI.  
+  The GUI module may be refactored later (possibly into a web interface) while the business logic remains largely unchanged.  
+  A logging mechanism for audit trails and debugging can be integrated into the Exception Handling Module.
+
+─────────────────────────────  
+6. Summary
+
+This high-level architecture splits the Simple Calculator application into four main components: the GUI Module (presenting the user interface), the Calculator Module (handling business logic and calculations), the Exception Handling Module (managing errors), and the Testing Module (ensuring reliability and performance). The selected technology stack leverages Python 3.8+ and Tkinter, with additional tools for dependency management (pipenv/virtualenv), containerization (Docker), version control (Git), and testing frameworks (unittest/pytest). This modular design ensures that the application is not only functionally robust and responsive but also maintainable and extensible for future requirements.
+
+This architecture provides a clear path for developers to implement, test, and extend the Simple Calculator software while meeting all specified design requirements and quality standards.
