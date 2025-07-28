@@ -1,358 +1,445 @@
-# System Specifications for Simple Python Calculator Application
+# System Specifications for Simple Python Calculator
 
-## **1. Introduction**
+## Table of Contents
 
-This document outlines the detailed system specifications for developing a simple, user-friendly calculator application in Python. The application aims to provide basic arithmetic functionalities through a graphical user interface (GUI) built with Tkinter, emphasizing robust error handling, security, and performance. The specifications encompass functional requirements, non-functional requirements, and system design recommendations aligned with the refined goals and environmental constraints.
-
----
-
-## **2. Functional Requirements**
-
-Functional requirements define **what** the system should accomplish. For the calculator application, these are categorized into arithmetic operations, user interface components, error handling, and calculation logic.
-
-### **2.1. Arithmetic Operations**
-
-The calculator will support the following basic arithmetic operations:
-
-- **Addition (+):**
-  - Enable users to add two or more numbers.
-  
-- **Subtraction (−):**
-  - Enable users to subtract one or more numbers.
-  
-- **Multiplication (×):**
-  - Enable users to multiply two or more numbers.
-  
-- **Division (÷):**
-  - Enable users to divide one number by another.
-  - Implement checks to prevent division by zero.
-
-### **2.2. User Interface (UI)**
-
-The UI is designed to be intuitive and resemble standard calculators for ease of use.
-
-- **Display Screen:**
-  - **Current Input Display:** Shows the number currently being entered.
-  - **Operation Display:** Shows the ongoing calculation sequence.
-  - **Result Display:** Shows the final result after calculation.
-  - Supports both integer and decimal numbers.
-
-- **Input Buttons:**
-  - **Numeric Buttons:** Digits 0 through 9.
-  - **Decimal Point (.):** Allows entry of decimal numbers.
-
-- **Operation Buttons:**
-  - **Addition (+)**
-  - **Subtraction (−)**
-  - **Multiplication (×)**
-  - **Division (÷)**
-
-- **Functional Buttons:**
-  - **Equals (=):** Executes the current calculation.
-  - **Clear (C):** Resets the current input and clears the calculation history.
-
-- **Layout:**
-  - Organized in a grid format mirroring standard calculators for user familiarity.
-  - Responsive design to accommodate various screen sizes, ensuring usability across different devices if necessary.
-
-### **2.3. Error Handling**
-
-Robust error handling ensures the application remains stable and provides meaningful feedback to users.
-
-- **Division by Zero:**
-  - Detect attempts to divide by zero.
-  - Display an error message (e.g., "Error: Division by Zero") without crashing the application.
-
-- **Invalid Input Detection:**
-  - Prevent multiple decimal points within a single number.
-  - Handle unexpected sequences of operations, such as consecutive operators.
-  - Alert users to invalid inputs and provide guidance to correct mistakes.
-
-- **Overflow/Underflow:**
-  - Manage cases where results exceed the display's capacity or numerical limits.
-  - Provide appropriate feedback or adjust display parameters as necessary.
-
-### **2.4. Calculation Logic**
-
-Efficient and accurate calculation processing is critical for user trust and application reliability.
-
-- **Sequential Calculations:**
-  - Allow users to perform multiple operations in sequence without needing to clear after each calculation.
-
-- **Operator Precedence:**
-  - Implement standard mathematical precedence rules (e.g., multiplication before addition) to ensure accurate results.
-  - Alternatively, adopt a left-to-right evaluation for simplicity, based on design decisions.
-
-- **Expression Parsing:**
-  - Parse and evaluate mathematical expressions entered by the user.
-  - Ensure correct handling of operator precedence and associativity.
+1. [Introduction](#1-introduction)
+2. [Functional Requirements](#2-functional-requirements)
+   - [2.1. User Interface (UI)](#21-user-interface-ui)
+     - [2.1.1. Layout](#211-layout)
+     - [2.1.2. Responsiveness](#212-responsiveness)
+   - [2.2. Arithmetic Operations](#22-arithmetic-operations)
+     - [2.2.1. Addition](#221-addition)
+     - [2.2.2. Subtraction](#222-subtraction)
+     - [2.2.3. Multiplication](#223-multiplication)
+     - [2.2.4. Division](#224-division)
+   - [2.3. Input Handling](#23-input-handling)
+     - [2.3.1. Number Input](#231-number-input)
+     - [2.3.2. Sequential Operations](#232-sequential-operations)
+     - [2.3.3. Input Validation](#233-input-validation)
+   - [2.4. Error Handling](#24-error-handling)
+     - [2.4.1. Division by Zero](#241-division-by-zero)
+     - [2.4.2. Invalid Input](#242-invalid-input)
+     - [2.4.3. Overflow/Underflow](#243-overflow-underflow)
+   - [2.5. Additional Features (Optional)](#25-additional-features-optional)
+     - [2.5.1. Memory Functions](#251-memory-functions)
+     - [2.5.2. History Log](#252-history-log)
+     - [2.5.3. Keyboard Support](#253-keyboard-support)
+3. [Non-Functional Requirements](#3-non-functional-requirements)
+   - [3.1. Usability](#31-usability)
+     - [3.1.1. Intuitive Design](#311-intuitive-design)
+     - [3.1.2. Accessibility](#312-accessibility)
+   - [3.2. Performance](#32-performance)
+     - [3.2.1. Responsiveness](#321-responsiveness)
+   - [3.3. Reliability](#33-reliability)
+     - [3.3.1. Error-Free Operations](#331-error-free-operations)
+     - [3.3.2. Stability](#332-stability)
+   - [3.4. Compatibility](#34-compatibility)
+     - [3.4.1. Operating Systems](#341-operating-systems)
+     - [3.4.2. Python Version](#342-python-version)
+   - [3.5. Maintainability](#35-maintainability)
+     - [3.5.1. Code Documentation](#351-code-documentation)
+     - [3.5.2. Modular Design](#352-modular-design)
+   - [3.6. Security](#36-security)
+     - [3.6.1. Input Sanitization](#361-input-sanitization)
+4. [System Design Recommendations](#4-system-design-recommendations)
+   - [4.1. Architectural Overview](#41-architectural-overview)
+   - [4.2. Technology Stack](#42-technology-stack)
+   - [4.3. Code Structure and Modularity](#43-code-structure-and-modularity)
+   - [4.4. Security Measures](#44-security-measures)
+   - [4.5. Performance Optimizations](#45-performance-optimizations)
+   - [4.6. Deployment Considerations](#46-deployment-considerations)
+   - [4.7. Future Enhancements](#47-future-enhancements)
+5. [Use Cases](#5-use-cases)
+   - [5.1. Perform Basic Calculation](#51-perform-basic-calculation)
+   - [5.2. Handle Division by Zero](#52-handle-division-by-zero)
+   - [5.3. Clear Input](#53-clear-input)
+   - [5.4. Invalid Input Handling](#54-invalid-input-handling)
+6. [Validation Criteria](#6-validation-criteria)
+7. [Glossary](#7-glossary)
+8. [Summary](#8-summary)
 
 ---
 
-## **3. Non-Functional Requirements**
+## 1. Introduction
 
-Non-functional requirements define **how** the system performs its functions. These include usability, performance, reliability, maintainability, compatibility, and security.
-
-### **3.1. Usability**
-
-- **Intuitive Design:**
-  - Ensure the UI is straightforward, enabling users of all ages and technical abilities to operate the calculator with minimal learning.
-  
-- **Accessibility:**
-  - Design buttons with adequate size and clear labeling for visibility.
-  - Use color contrasts and appropriate font sizes to enhance readability.
-
-### **3.2. Performance**
-
-- **Responsiveness:**
-  - Ensure that button presses and display updates occur instantaneously or without noticeable delays.
-  
-- **Accuracy:**
-  - Perform calculations with precise numerical accuracy, correctly handling floating-point operations.
-
-### **3.3. Reliability**
-
-- **Robust Error Handling:**
-  - Prevent application crashes due to unexpected inputs or operations.
-  
-- **Consistent Behavior:**
-  - Ensure predictable calculator behavior across different usage scenarios.
-
-### **3.4. Maintainability**
-
-- **Code Quality:**
-  - Write clean, well-documented, and modular code to simplify future updates or debugging.
-  
-- **Scalability:**
-  - Design the architecture to allow easy addition of new features (e.g., advanced mathematical functions) in future iterations.
-
-### **3.5. Compatibility**
-
-- **Platform Support:**
-  - Ensure the application runs smoothly on major operating systems that support Python and Tkinter, including Windows, macOS, and Linux.
-
-### **3.6. Security**
-
-Although a simple calculator may not handle sensitive data, adhering to security best practices ensures application integrity.
-
-- **Secure Code Practices:**
-  - Follow secure coding standards to prevent injection attacks or unexpected behaviors.
-  
-- **Dependency Management:**
-  - Use only trusted libraries (Tkinter and standard Python libraries) to minimize vulnerabilities.
-  
-- **Regular Updates:**
-  - Keep Python and all dependencies updated to patch known security issues.
+The **Simple Python Calculator** is a desktop application developed using Python and Tkinter for the graphical user interface (GUI). It is designed to perform basic arithmetic operations—addition, subtraction, multiplication, and division—with robust error handling and an intuitive user interface. The application targets primary users such as students and professionals who require straightforward calculation functionalities.
 
 ---
 
-## **4. System Design Recommendations**
+## 2. Functional Requirements
 
-System design outlines **how** the system will be structured and how its components will interact to meet the specified requirements.
+Functional requirements define the specific behaviors and functions of the system. They ensure that the application performs the intended tasks effectively.
 
-### **4.1. Architecture Overview**
+### 2.1. User Interface (UI)
 
-- **Modular Structure:**
-  - **GUI Module:** Handles all user interface components and interactions.
-  - **Logic Module:** Processes arithmetic operations and manages calculation logic.
-  - **Error Handling Module:** Manages detection and response to invalid inputs or operations.
-  
-- **Separation of Concerns:**
-  - Maintain a clear separation between the GUI and the calculation logic to enhance maintainability and scalability.
+#### 2.1.1. Layout
 
-### **4.2. User Interface Design**
-
-- **Layout:**
-  - Arrange buttons in a grid layout resembling standard calculators for user familiarity.
-  
 - **Display Area:**
-  - Position the display area at the top of the application window.
-  - Use two lines to separate the ongoing calculation from the current input/result.
+  - A dedicated screen to present input numbers, operations, and results.
+  - Should support both integer and floating-point representations.
 
-- **Responsive Design:**
-  - Utilize Tkinter’s grid and pack geometry managers to adapt the layout to different window sizes.
+- **Buttons:**
+  - **Numeric Buttons:** 0 through 9.
+  - **Decimal Point (.) Button:** For floating-point number input.
+  - **Negation (±) Button:** To toggle the sign of the current number.
+  - **Arithmetic Operation Buttons:**
+    - Addition (+)
+    - Subtraction (−)
+    - Multiplication (×)
+    - Division (÷)
+  - **Additional Buttons:**
+    - Equals (=): To compute the result.
+    - Clear (C): To reset the current input.
+    - Backspace (⌫): (Optional) To delete the last entered character.
 
-- **Visual Feedback:**
-  - Highlight buttons on hover or click to provide visual feedback to users.
+#### 2.1.2. Responsiveness
 
-### **4.3. Input Validation**
+- The UI should dynamically adjust to various screen sizes and resolutions.
+- Ensure that buttons and display areas are proportionally scaled.
+- Maintain usability across different display settings (e.g., high-DPI screens).
 
-- **Numeric Input:**
-  - Allow only one decimal point per number to prevent invalid decimal representations.
-  - Prevent leading zeros unless the number is zero or a decimal number (e.g., 0.5).
+### 2.2. Arithmetic Operations
 
-- **Operator Input:**
-  - Prevent the entry of multiple consecutive operators.
-  - If an operator is entered immediately after another, replace the previous operator with the new one.
+#### 2.2.1. Addition
 
-- **Clear Functionality:**
-  - Reset the entire calculation when the 'C' button is pressed, clearing all displays and stored values.
+- Capability to add two or more numbers sequentially.
+- Support chaining additions without requiring intermediate equals operations.
 
-### **4.4. Calculation Logic**
+#### 2.2.2. Subtraction
 
-- **Expression Parsing:**
-  - Implement an expression parser to evaluate mathematical expressions according to operator precedence.
-  - Alternatively, use Python’s `eval()` function with proper sanitization, ensuring security and correctness.
+- Ability to subtract one number from another.
+- Support negative results and consecutive subtraction operations.
 
-- **Sequential Operations:**
-  - Allow users to perform multiple operations in a single calculation sequence without resetting after each operation.
+#### 2.2.3. Multiplication
 
-- **Result Handling:**
-  - Display results seamlessly in the display area, allowing users to continue calculations based on previous results.
+- Functionality to multiply two or more numbers.
+- Handle multiple consecutive multiplication operations.
 
-### **4.5. Error Handling**
+#### 2.2.4. Division
 
-- **Exception Management:**
-  - Use try-except blocks to catch and handle runtime errors gracefully.
-  
-- **User Feedback:**
-  - Display clear and concise error messages in the display area to inform users of issues (e.g., "Error: Division by Zero").
+- Ability to divide one number by another.
+- Proper handling and messaging for division by zero scenarios.
 
-- **Input Restrictions:**
-  - Disable or ignore invalid inputs to prevent erroneous calculations (e.g., additional decimal points).
+### 2.3. Input Handling
 
-### **4.6. Security Measures**
+#### 2.3.1. Number Input
 
-- **Secure Coding Practices:**
-  - Avoid using insecure functions or practices that could lead to code injection or unexpected behaviors.
-  
-- **Dependency Security:**
-  - Use only standard libraries (Tkinter) to minimize security risks associated with third-party dependencies.
-  
-- **Input Sanitization:**
-  - Ensure all inputs are validated and sanitized before processing to prevent potential security vulnerabilities.
+- Support for entering both integers and floating-point numbers.
+- Ensure that the decimal point is used appropriately without duplication.
 
-### **4.7. Performance Optimizations**
+#### 2.3.2. Sequential Operations
 
-- **Efficient Rendering:**
-  - Optimize GUI rendering to ensure smooth and instantaneous updates upon user interactions.
-  
-- **Minimal Resource Usage:**
-  - Keep the application lightweight to ensure it runs efficiently on various systems without excessive memory or CPU consumption.
+- Ability to handle consecutive operations (e.g., `2 + 3 × 4`) with correct operation precedence.
+- Optionally, implement immediate execution based on input sequence.
 
-- **Asynchronous Processing:**
-  - For a simple calculator, asynchronous processing may not be necessary, but ensure that operations do not block the main thread, maintaining GUI responsiveness.
+#### 2.3.3. Input Validation
 
-### **4.8. Code Structure and Documentation**
+- Validate that all inputs are numerical and operations follow logical sequencing.
+- Prevent invalid sequences such as starting with an operator or entering multiple operators consecutively without an operand.
 
-- **Modular Codebase:**
-  - Organize code into modules and classes, separating GUI components from business logic.
-  
-- **Documentation:**
-  - Provide comprehensive docstrings and comments within the code to facilitate understanding and future maintenance.
-  
-- **Version Control:**
-  - Use a version control system (e.g., Git) to manage code changes, track revisions, and collaborate effectively.
+### 2.4. Error Handling
 
----
+#### 2.4.1. Division by Zero
 
-## **5. Testing Requirements**
+- Detect attempts to divide by zero.
+- Display a clear and concise error message (e.g., "Error: Division by Zero").
+- Prevent the application from crashing due to such operations.
 
-Ensuring the calculator functions as intended involves implementing various testing procedures.
+#### 2.4.2. Invalid Input
 
-### **5.1. Unit Testing**
+- Detect invalid inputs such as multiple decimal points in a single number.
+- Notify users through error messages or by ignoring invalid keystrokes.
 
-- **Arithmetic Operations:**
-  - Test each operation (addition, subtraction, multiplication, division) with a range of inputs to verify correct outcomes.
-  
-- **Error Handling:**
-  - Test scenarios like division by zero and multiple decimal points to ensure errors are handled gracefully.
+#### 2.4.3. Overflow/Underflow
 
-### **5.2. Integration Testing**
+- Handle scenarios where calculation results exceed the representable numerical range.
+- Display appropriate error messages or adjust the display format to accommodate large/small numbers.
 
-- **UI and Logic Integration:**
-  - Verify that button presses correctly trigger the corresponding calculation logic.
-  - Ensure that the display updates appropriately based on user interactions and results.
+### 2.5. Additional Features (Optional)
 
-### **5.3. Usability Testing**
+#### 2.5.1. Memory Functions
 
-- **User Experience:**
-  - Conduct tests with users to assess the intuitiveness of the UI layout.
-  - Gather feedback on responsiveness and ease of use to identify areas for improvement.
+- **Memory Store (MS):** Store the current number in memory.
+- **Memory Recall (MR):** Retrieve the stored memory value.
+- **Memory Clear (MC):** Clear the stored memory value.
+- **Memory Add (M+):** Add the current number to the stored memory value.
 
-### **5.4. Performance Testing**
+#### 2.5.2. History Log
 
-- **Response Time:**
-  - Measure the time between user input and display updates to ensure minimal delays, providing a smooth user experience.
+- Display a log of recent calculations.
+- Allow users to review and potentially reuse previous calculations.
 
-### **5.5. Compatibility Testing**
+#### 2.5.3. Keyboard Support
 
-- **Cross-Platform Functionality:**
-  - Test the application on different operating systems (Windows, macOS, Linux) to ensure consistent behavior and appearance.
+- Enable input via the keyboard in addition to mouse clicks.
+- Map keyboard keys to corresponding calculator buttons for seamless user experience.
 
 ---
 
-## **6. Security Considerations**
+## 3. Non-Functional Requirements
 
-While the calculator application does not handle sensitive data, adhering to security best practices is essential to maintain application integrity.
+Non-functional requirements specify the system's operational attributes, ensuring quality and performance standards are met.
 
-### **6.1. Secure Development Practices**
+### 3.1. Usability
+
+#### 3.1.1. Intuitive Design
+
+- Design the interface to be user-friendly and easily navigable.
+- Use clear labels and distinguishable buttons to enhance user interaction.
+
+#### 3.1.2. Accessibility
+
+- Ensure compatibility with screen readers for visually impaired users.
+- Incorporate keyboard navigation and adequate contrast ratios for better visibility.
+
+### 3.2. Performance
+
+#### 3.2.1. Responsiveness
+
+- Ensure that all calculations and UI updates occur instantaneously.
+- Minimize any noticeable lag between user actions and system responses.
+
+### 3.3. Reliability
+
+#### 3.3.1. Error-Free Operations
+
+- Guarantee accurate results for all supported arithmetic operations.
+- Maintain consistency in handling edge cases and unusual input scenarios.
+
+#### 3.3.2. Stability
+
+- Prevent the application from crashing during standard usage.
+- Handle unexpected inputs or operations gracefully without terminating the program.
+
+### 3.4. Compatibility
+
+#### 3.4.1. Operating Systems
+
+- Ensure the application runs smoothly on major operating systems:
+  - **Windows**
+  - **macOS**
+  - **Linux**
+
+#### 3.4.2. Python Version
+
+- Specify Python version requirements, e.g., **Python 3.7+**.
+- Ensure compatibility with the chosen Python version's Tkinter library.
+
+### 3.5. Maintainability
+
+#### 3.5.1. Code Documentation
+
+- Provide comprehensive documentation for all modules, classes, and functions.
+- Include inline comments to explain complex logic and decision-making processes.
+
+#### 3.5.2. Modular Design
+
+- Organize code into distinct, reusable modules or classes.
+- Facilitate easy updates, debugging, and potential feature expansions.
+
+### 3.6. Security
+
+#### 3.6.1. Input Sanitization
+
+- Although the application is local, implement proper input handling to prevent potential vulnerabilities.
+- Ensure that all inputs are validated and sanitized before processing.
+
+---
+
+## 4. System Design Recommendations
+
+System design encompasses the architecture and components necessary to fulfill the specified requirements efficiently and effectively.
+
+### 4.1. Architectural Overview
+
+Adopt the **Model-View-Controller (MVC)** architectural pattern to separate concerns:
+
+- **Model:** Handles the core calculation logic and data management.
+- **View:** Manages the GUI elements using Tkinter.
+- **Controller:** Acts as an intermediary between the Model and View, handling user inputs and updating the display accordingly.
+
+### 4.2. Technology Stack
+
+- **Programming Language:** Python 3.7+
+- **GUI Framework:** Tkinter
+- **Libraries:**
+  - **`math` Module:** For potential future enhancements involving advanced mathematical operations.
+  - **`decimal` Module:** To handle floating-point arithmetic with higher precision, minimizing floating-point errors.
+
+### 4.3. Code Structure and Modularity
+
+- **Modules:**
+  - **`calculator.py`:** Contains the core arithmetic operations and calculation logic.
+  - **`gui.py`:** Manages all GUI-related components and user interactions.
+  - **`helpers.py`:** Houses utility functions such as input validation and error handling.
+  
+- **Classes:**
+  - **`Calculator`:** Implements the calculation logic and maintains the current state.
+  - **`CalculatorGUI`:** Builds and manages the Tkinter-based user interface.
+  
+- **Benefits:**
+  - Enhances readability and maintainability.
+  - Facilitates independent testing of individual components.
+
+### 4.4. Security Measures
 
 - **Input Validation:**
-  - Rigorously validate all user inputs to prevent unexpected behaviors or potential security vulnerabilities.
+  - Ensure all user inputs are strictly numerical or valid operation symbols.
+  - Implement checks to prevent injection of unintended commands or scripts, even though Tkinter applications are typically secure against such threats.
   
-- **Avoiding `eval()`:**
-  - Refrain from using Python’s `eval()` function due to security risks. Instead, implement a safe parsing mechanism for arithmetic expressions.
+- **Error Handling:**
+  - Gracefully handle unexpected inputs or operations without exposing internal application states or error traces to the user.
 
-### **6.2. Dependency Management**
+### 4.5. Performance Optimizations
 
-- **Trusted Libraries:**
-  - Limit dependencies to Tkinter and standard Python libraries to minimize security risks associated with third-party packages.
+- **Efficient Calculations:**
+  - Implement optimized algorithms for arithmetic operations to ensure swift computations.
   
-- **Regular Updates:**
-  - Keep Python and all dependencies updated to incorporate security patches and improvements.
+- **Resource Management:**
+  - Manage memory effectively, especially when implementing optional features like history logs.
 
-### **6.3. Code Security**
+- **Lazy Loading:**
+  - Load only necessary components at application start, delaying optional features until required.
 
-- **Code Reviews:**
-  - Conduct regular code reviews to identify and rectify potential security issues or vulnerabilities.
+### 4.6. Deployment Considerations
+
+- **Packaging:**
+  - Utilize tools like **PyInstaller** or **cx_Freeze** to package the application into standalone executables for different operating systems.
   
-- **Least Privilege:**
-  - Run the application with the least necessary privileges to reduce the impact in case of unforeseen issues.
+- **Cross-Platform Testing:**
+  - Test the packaged application on all target operating systems to ensure consistent behavior and appearance.
+
+- **Dependency Management:**
+  - Clearly document all dependencies and ensure they are included or handled during packaging.
+
+### 4.7. Future Enhancements
+
+- **Scientific Calculator Features:**
+  - Incorporate advanced mathematical functions such as exponents, roots, and trigonometric operations.
+  
+- **Themable UI:**
+  - Allow users to switch between different themes or color schemes for better personalization.
+  
+- **Localization:**
+  - Support multiple languages to cater to a diverse user base.
+  
+- **Multi-line Computation:**
+  - Enable complex expressions with parentheses and operator precedence for more sophisticated calculations.
 
 ---
 
-## **7. Future Enhancements (Optional)**
+## 5. Use Cases
 
-While the current scope focuses on basic arithmetic operations, the following features can be considered for future iterations to enhance functionality and user experience:
+Use cases describe the interactions between users and the system to achieve specific goals.
 
-- **Keyboard Support:**
-  - Enable users to perform calculations using keyboard inputs in addition to on-screen buttons.
+### 5.1. Perform Basic Calculation
 
-- **Advanced Mathematical Functions:**
-  - Introduce functions such as exponentiation, square roots, trigonometric operations, etc., to expand the calculator's capabilities.
+- **Actor:** User
+- **Precondition:** The application is launched and ready.
+- **Flow:**
+  1. User inputs the first number using numeric buttons or keyboard.
+  2. User selects an arithmetic operation (e.g., addition).
+  3. User inputs the second number.
+  4. User presses the equals (=) button.
+  5. The result is computed and displayed in the display area.
 
-- **Memory Functions:**
-  - Implement memory storage features (e.g., M+, M-, MR, MC) to allow users to store and retrieve values.
+### 5.2. Handle Division by Zero
 
-- **Theming:**
-  - Provide different UI themes (light mode, dark mode) to cater to user preferences.
+- **Actor:** User
+- **Precondition:** User attempts to divide a number by zero.
+- **Flow:**
+  1. User inputs a non-zero number.
+  2. User selects the division (÷) operation.
+  3. User inputs zero.
+  4. User presses the equals (=) button.
+  5. The application detects the division by zero and displays an error message (e.g., "Error: Division by Zero") without crashing.
+
+### 5.3. Clear Input
+
+- **Actor:** User
+- **Precondition:** User has entered one or more numbers and/or operations.
+- **Flow:**
+  1. User presses the clear (C) button.
+  2. The display area is reset to zero or blank.
+  3. The current calculation state is cleared.
+
+### 5.4. Invalid Input Handling
+
+- **Actor:** User
+- **Precondition:** User attempts to enter an invalid input (e.g., multiple decimal points in a single number).
+- **Flow:**
+  1. User tries to enter an invalid input sequence.
+  2. The application detects the invalid input.
+  3. The application either ignores the invalid input or displays an appropriate error message without disrupting the current state.
 
 ---
 
-## **8. Summary**
+## 6. Validation Criteria
 
-This system specification document provides a comprehensive outline for developing a simple Python-based calculator application with a Tkinter GUI. By detailing functional and non-functional requirements, along with system design recommendations and security considerations, the document serves as a roadmap to ensure the development of a robust, user-friendly, and maintainable application. Adhering to these specifications will facilitate efficient development, thorough testing, and the potential for future enhancements to meet evolving user needs.
+To ensure the application meets all specified requirements, the following validation criteria will be employed:
+
+### 6.1. Functional Testing
+
+- **Arithmetic Operations:**
+  - Verify that addition, subtraction, multiplication, and division produce correct results.
+  
+- **Button Functionality:**
+  - Ensure all buttons perform their intended actions accurately.
+  
+- **Optional Features:**
+  - Test memory functions, history logs, and keyboard support if implemented.
+
+### 6.2. Usability Testing
+
+- **Intuitive Navigation:**
+  - Assess whether users can navigate and operate the calculator without prior instructions.
+  
+- **Accessibility Features:**
+  - Confirm compatibility with screen readers and keyboard navigation.
+
+### 6.3. Error Handling Tests
+
+- **Division by Zero:**
+  - Validate that division by zero is correctly identified and handled.
+  
+- **Invalid Inputs:**
+  - Test scenarios with multiple decimal points, consecutive operators, and other invalid sequences to ensure proper handling.
+
+### 6.4. Compatibility Testing
+
+- **Operating Systems:**
+  - Test the application on Windows, macOS, and Linux to ensure consistent behavior.
+  
+- **Python Versions:**
+  - Confirm compatibility with the specified Python versions (e.g., Python 3.7 and above).
+
+### 6.5. Performance Testing
+
+- **Responsiveness:**
+  - Measure the time taken for calculations and UI updates to ensure they occur instantaneously.
+  
+- **Resource Utilization:**
+  - Monitor CPU and memory usage to ensure the application operates efficiently.
+
+### 6.6. Security Testing
+
+- **Input Sanitization:**
+  - Test the application against potential injection attempts and ensure that all inputs are properly sanitized.
 
 ---
 
-## **9. Appendices**
+## 7. Glossary
 
-### **9.1. Use Case Diagrams**
+- **GUI (Graphical User Interface):** A visual interface that allows users to interact with electronic devices through graphical icons and visual indicators.
+- **Tkinter:** A standard Python library for creating graphical user interfaces.
+- **MVC (Model-View-Controller):** An architectural pattern that separates an application into three main logical components: Model, View, and Controller.
+- **PyInstaller:** A tool for packaging Python applications into standalone executables.
+- **PEP 8:** Python Enhancement Proposal that outlines style guidelines for writing Python code.
 
-Include diagrams illustrating user interactions with the calculator, depicting scenarios such as performing calculations, handling errors, and using functional buttons.
+---
 
-### **9.2. Glossary**
+## 8. Summary
 
-- **GUI:** Graphical User Interface
-- **Tkinter:** Python’s standard GUI library
-- **RBAC:** Role-Based Access Control
-- **AES-256:** Advanced Encryption Standard with 256-bit keys
-- **TLS:** Transport Layer Security
+The **Simple Python Calculator** is meticulously designed to deliver reliable and efficient basic arithmetic computations through an intuitive Tkinter-based GUI. By adhering to well-defined functional and non-functional requirements, and incorporating robust system design principles, the application ensures a seamless user experience across multiple platforms. Additionally, the consideration of future enhancements and a focus on maintainability positions the calculator as a scalable solution catering to evolving user needs.
 
-### **9.3. References**
-
-- Python Documentation: [https://docs.python.org/3/](https://docs.python.org/3/)
-- Tkinter Documentation: [https://docs.python.org/3/library/tkinter.html](https://docs.python.org/3/library/tkinter.html)
-- OWASP Top Ten: [https://owasp.org/www-project-top-ten/](https://owasp.org/www-project-top-ten/)
-- PEP 8 - Style Guide for Python Code: [https://pep8.org/](https://pep8.org/)
+---
