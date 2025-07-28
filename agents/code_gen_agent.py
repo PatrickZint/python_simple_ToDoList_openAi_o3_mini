@@ -68,7 +68,7 @@ def save_codebase_as_zip(codebase_json_path, zip_path):
     with open(codebase_json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    print(data)
+    #print(data)
 
     # Liste der Dateien aus dem JSON auslesen
     files = data.get("files", [])
