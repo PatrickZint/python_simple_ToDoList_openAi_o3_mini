@@ -22,7 +22,7 @@ def main():
     llm_reasoner = LLMReasoner()
     # Initialize GitHub manager with a personal access token and repository name
     # These are from the newly created GitHub repository that will be used to store the generated code
-    github_manager = GitHubManager(os.getenv('GITHUB_TOKEN'), 'python_calculator_openAi_o3_mini')
+    github_manager = GitHubManager(os.getenv('GITHUB_TOKEN'), 'python_advanced_calculator_openAi_o3_mini')
 
     # Agent Pipeline
     goal_agent = GoalAnalysisAgent(llm_reasoner, github_manager)
