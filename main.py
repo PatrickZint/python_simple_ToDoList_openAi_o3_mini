@@ -22,9 +22,8 @@ def main():
     llm_reasoner = LLMReasoner()
     # Initialize GitHub manager with a personal access token and repository name
     # These are from the newly created GitHub repository that will be used to store the generated code
-    github_manager = GitHubManager(os.getenv('GITHUB_TOKEN'), 'python_advanced_calculator_openAi_o3_mini')
+    github_manager = GitHubManager(os.getenv('GITHUB_TOKEN'), 'python_simple_ToDoList_openAi_o3_mini')
 
-    """
     # Agent Pipeline
     goal_agent = GoalAnalysisAgent(llm_reasoner, github_manager)
     refined_goals = goal_agent.process_goals('inputs/goals.txt')
@@ -48,7 +47,6 @@ def main():
     architecture_design = arch_design_agent.design_architecture('outputs/system_specifications.txt')
     #print("System Architecture Design:", architecture_design)
     save_output('outputs/system_architecture.txt', architecture_design)
-    """
 
     # Generate Codebase
     code_gen_agent = CodeGenerationAgent(llm_reasoner, github_manager)

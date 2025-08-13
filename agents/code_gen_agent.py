@@ -75,7 +75,7 @@ def save_codebase_as_zip(codebase_json_path, zip_path):
 
     # ZIP-Datei erstellen
     with zipfile.ZipFile(zip_path, 'w') as zipf:
-        # Durch alle Einträge im JSON iterieren
+        # Durch alle Einträge im Dictionary iterieren
         # Hier ist jeder Schlüssel ein Dateiname und jeder Wert der Dateiinhalt
         for file_info in files:
             filename = file_info.get("filename")
